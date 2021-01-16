@@ -1,63 +1,34 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'ShoppingListItem.dart';
 
 void main() {
   runApp(MaterialApp(
     title: 'Bayya',
     home: ShoppingList(
       products: <Product>[
-        Product(name: 'Egg', description: 'Chicken product', category: 'Dairy', price: 1),
-        Product(name: 'Flour', description: 'Grain product', category: 'Powder', price: 5),
-        Product(name: 'Chocolate chips', description: 'Sweet product', category: 'Sweet', price: 2)
+        Product(
+            name: 'Egg',
+            shortDescription: 'Chicken product',
+            longDescription: 'Chicken product',
+            category: ProductCategory.food,
+            price: 1.0),
+        Product(
+            name: 'Flour',
+            shortDescription: 'Grain product',
+            longDescription: 'Powder made by grinding raw grains',
+            category: ProductCategory.food,
+            price: 5),
+        Product(
+            name: 'Chocolate chips',
+            shortDescription: 'Sweet product',
+            longDescription:
+                'Preparation of roasted and ground cacao seeds that is made in the form of bricks',
+            category: ProductCategory.food,
+            price: 2)
       ],
     ),
   ));
-}
-
-class Product {
-  const Product({this.name,this.description,this.category,this.price});
-  final String name;
-  final String description;
-  final String category;
-  final int price;
-}
-
-typedef void CartChangedCallback(Product product, bool inCart);
-
-class ShoppingListItem extends StatelessWidget {
-  ShoppingListItem({this.product, this.inCart, this.onCartChanged})
-      : super(key: ObjectKey(product));
-
-  final Product product;
-  final bool inCart;
-  final CartChangedCallback onCartChanged;
-
-  Color _getColor(BuildContext context) {
-    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
-  }
-
-  TextStyle _getTextStyle(BuildContext context) {
-    if (!inCart) return null;
-
-    return TextStyle(
-        color: Colors.black54, decoration: TextDecoration.lineThrough);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        onCartChanged(product, inCart);
-      },
-      leading: CircleAvatar(
-        backgroundColor: _getColor(context),
-        child: Text(product.name[0]),
-      ),
-      title: Text(
-        product.name + '\n' + product.description + '\n' + product.category + '\n' + product.price.toString(),
-        style: _getTextStyle(context),
-      ),
-    );
-  }
 }
 
 class ShoppingList extends StatefulWidget {

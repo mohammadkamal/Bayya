@@ -1,10 +1,12 @@
 import 'dart:ffi';
+import 'package:Bayya/ShoppingCart.dart';
 import 'package:flutter/material.dart';
 
 class Product {
   //Constructor
   Product(
-      {this.name,
+      {this.id,
+      this.name,
       this.shortDescription,
       this.longDescription,
       this.vendor,
@@ -14,6 +16,7 @@ class Product {
   //Fields & Variables
   final String name, shortDescription, longDescription, vendor;
   final double price;
+  final int id;
   Float ratings;
   int quantity;
   ProductCategory category;
@@ -86,52 +89,124 @@ class ShoppingListItem extends StatelessWidget {
     );
   }
 
-  Column _buttonColumn(IconData icon, String label) {
-    return Column(
+  GestureDetector _buttonWatchlist({bool isWatchlisted = false}) {
+    String textWatchlist = isWatchlisted ? 'Watchlisted' : 'Watchlist';
+    Icon iconWatchlist = isWatchlisted
+        ? Icon(Icons.favorite, color: Colors.red)
+        : Icon(Icons.favorite_border);
+    return GestureDetector(
+        child: Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon),
+        iconWatchlist,
         Container(
             margin: const EdgeInsets.only(top: 8),
             child: Text(
-              label,
+              textWatchlist,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
             ))
       ],
-    );
+    ));
+  }
+
+  GestureDetector _buttonAddToCart() {
+    bool isInShoppingCart = ShoppingCart.isInCart(product.id);
+    String textShoppingCart =
+        isInShoppingCart ? 'Remove from shopping cart' : 'Add to shopping cart';
+    Icon iconShoppingCart = isInShoppingCart
+        ? Icon(Icons.shopping_cart, color: Colors.lightGreen[500])
+        : Icon(Icons.add_shopping_cart);
+    return GestureDetector(
+        onTap: () {
+          ShoppingCart.onCartChange(product.id);
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconShoppingCart,
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              child: Text(
+                textShoppingCart,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+              ),
+            )
+          ],
+        ));
   }
 
   Widget buttonSection() {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buttonColumn(Icons.favorite_border, 'Favourite'),
-          _buttonColumn(
-              Icons.add_shopping_cart_outlined, 'Add to Shopping Cart')
-        ],
+        children: [_buttonWatchlist(), _buttonAddToCart()],
+      ),
+    );
+  }
+
+  GestureDetector _addToCartMinimized() {
+    bool isInShoppingCart = ShoppingCart.isInCart(product.id);
+    Icon iconShoppingCart = isInShoppingCart
+        ? Icon(Icons.shopping_cart, color: Colors.lightGreen[500])
+        : Icon(Icons.add_shopping_cart);
+    return GestureDetector(
+        onTap: () {
+          ShoppingCart.onCartChange(product.id);
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconShoppingCart,
+          ],
+        ));
+  }
+
+  GestureDetector _watchlistMinimized({bool isWatchlisted = false}) {
+    Icon iconWatchlist = isWatchlisted
+        ? Icon(Icons.favorite, color: Colors.red)
+        : Icon(Icons.favorite_border);
+    return GestureDetector(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        iconWatchlist,
+      ],
+    ));
+  }
+
+  Widget buttonsMinimized() {
+    return Container(
+      alignment: Alignment.bottomRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        children: [_watchlistMinimized(), _addToCartMinimized()],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        _viewProduct(context);
-      },
-      leading: CircleAvatar(
-        backgroundColor: _getColor(context),
-        child: Text(product.name[0]),
-      ),
-      title: Text(
-        product.name,
-      ),
-      subtitle: Text(product.shortDescription +
-          '\n' +
-          product.category.toString().split('.').last),
-      trailing: Text(product.price.toString() + ' EGP'),
-    );
+    return GestureDetector(
+        onTap: () {
+          _viewProduct(context);
+        },
+        child: Container(
+          child: Column(
+            children: [
+              titleSection(),
+              Row(
+                children: [Text('Price: ' + product.price.toString() + ' EGP')],
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+              ),
+              buttonsMinimized()
+            ],
+          ),
+        ));
   }
 }

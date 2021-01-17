@@ -1,16 +1,13 @@
 # Bayya
 
-A new Flutter project.
+An e-commerce flutter application
 
-## Getting Started
+## Description
+### Homepage
+Homepage currently contains list of dummy test cases for products.
+![Alt text](/docs/homepage_screenshot.png?raw=true)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Product page
+Product page currently contains some details about the products itself.
+![Alt text](/docs/product_screenshot.png?raw=true)
+![Alt text](/docs/product_added_to_shopping_cart.png?raw=true)

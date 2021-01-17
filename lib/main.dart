@@ -8,24 +8,26 @@ void main() {
     home: ShoppingList(
       products: <Product>[
         Product(
-            name: 'Egg',
-            shortDescription: 'Chicken product',
-            longDescription: 'Chicken product',
-            category: ProductCategory.food,
-            price: 1.0),
+            id: 0,
+            name: 'Blue jeans',
+            shortDescription: 'Blue jeans for men',
+            longDescription: 'Blue jeans for men available at all sizes',
+            category: ProductCategory.clothes,
+            price: 50),
         Product(
-            name: 'Flour',
-            shortDescription: 'Grain product',
-            longDescription: 'Powder made by grinding raw grains',
-            category: ProductCategory.food,
-            price: 5),
+            id: 1,
+            name: 'LED TV',
+            shortDescription: 'Television with LED screen',
+            longDescription: '20-inch monitor with HD quality display',
+            category: ProductCategory.elctronics,
+            price: 1100),
         Product(
-            name: 'Chocolate chips',
-            shortDescription: 'Sweet product',
-            longDescription:
-                'Preparation of roasted and ground cacao seeds that is made in the form of bricks',
+            id: 2,
+            name: 'Chocolate jar',
+            shortDescription: 'Jar contatins chocolate mixture',
+            longDescription: 'One liter jar filled with chocolate mixture',
             category: ProductCategory.food,
-            price: 2)
+            price: 12)
       ],
     ),
   ));

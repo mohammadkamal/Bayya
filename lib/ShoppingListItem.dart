@@ -1,4 +1,6 @@
 import 'dart:ffi';
+import 'dart:ui';
+import 'package:Bayya/ProductView.dart';
 import 'package:Bayya/ShoppingCart.dart';
 import 'package:flutter/material.dart';
 
@@ -17,39 +19,20 @@ class Product {
   final String name, shortDescription, longDescription, vendor;
   final double price;
   final int id;
+  bool inShopCart;
   Float ratings;
   int quantity;
   ProductCategory category;
 }
 
+typedef void CartChangedCallback(Product product);
+
 enum ProductCategory { clothes, elctronics, food }
 
-typedef void CartChangedCallback(Product product, bool inCart);
-
 class ShoppingListItem extends StatelessWidget {
-  ShoppingListItem({this.product, this.inCart, this.onCartChanged})
-      : super(key: ObjectKey(product));
+  ShoppingListItem({this.product});
 
   final Product product;
-  final bool inCart;
-  final CartChangedCallback onCartChanged;
-
-  Color _getColor(BuildContext context) {
-    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
-  }
-
-  void _viewProduct(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(product.name),
-          ),
-          body: Column(
-            children: [titleSection(), descriptionSection(), buttonSection()],
-          ));
-    }));
-  }
 
   Widget titleSection() {
     return Container(
@@ -69,91 +52,21 @@ class ShoppingListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  product.shortDescription,
-                  style: TextStyle(color: Colors.grey[500]),
-                )
+                Text(product.shortDescription)
               ],
             ))
           ],
         ));
   }
 
-  Widget descriptionSection() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Text(
-        product.longDescription,
-        softWrap: true,
-      ),
-    );
-  }
-
-  GestureDetector _buttonWatchlist({bool isWatchlisted = false}) {
-    String textWatchlist = isWatchlisted ? 'Watchlisted' : 'Watchlist';
-    Icon iconWatchlist = isWatchlisted
-        ? Icon(Icons.favorite, color: Colors.red)
-        : Icon(Icons.favorite_border);
-    return GestureDetector(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        iconWatchlist,
-        Container(
-            margin: const EdgeInsets.only(top: 8),
-            child: Text(
-              textWatchlist,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-            ))
-      ],
-    ));
-  }
-
-  GestureDetector _buttonAddToCart() {
-    bool isInShoppingCart = ShoppingCart.isInCart(product.id);
-    String textShoppingCart =
-        isInShoppingCart ? 'Remove from shopping cart' : 'Add to shopping cart';
-    Icon iconShoppingCart = isInShoppingCart
+  GestureDetector _addToCartMinimized({bool inCart = true}) {
+    Icon iconShoppingCart = inCart
         ? Icon(Icons.shopping_cart, color: Colors.lightGreen[500])
         : Icon(Icons.add_shopping_cart);
+    
     return GestureDetector(
         onTap: () {
-          ShoppingCart.onCartChange(product.id);
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconShoppingCart,
-            Container(
-              margin: const EdgeInsets.only(top: 8),
-              child: Text(
-                textShoppingCart,
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-              ),
-            )
-          ],
-        ));
-  }
-
-  Widget buttonSection() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [_buttonWatchlist(), _buttonAddToCart()],
-      ),
-    );
-  }
-
-  GestureDetector _addToCartMinimized() {
-    bool isInShoppingCart = ShoppingCart.isInCart(product.id);
-    Icon iconShoppingCart = isInShoppingCart
-        ? Icon(Icons.shopping_cart, color: Colors.lightGreen[500])
-        : Icon(Icons.add_shopping_cart);
-    return GestureDetector(
-        onTap: () {
-          ShoppingCart.onCartChange(product.id);
+          shopCartSnack();
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -189,13 +102,30 @@ class ShoppingListItem extends StatelessWidget {
     );
   }
 
+  SnackBar shopCartSnack() {
+    return SnackBar(
+      content: Text('Added to Shopping Cart'),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {},
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          _viewProduct(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductView(product: product)));
         },
         child: Container(
+          margin: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Colors.white),
+              color: Colors.white),
           child: Column(
             children: [
               titleSection(),

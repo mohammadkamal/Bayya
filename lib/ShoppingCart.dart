@@ -2,26 +2,61 @@ import 'package:Bayya/ShoppingListItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ShoppingCart {
-  static Set<int> _productsIDs = Set<int>();
+class ShoppingCartItem extends StatelessWidget {
+  ShoppingCartItem({this.product, this.inCart});
+  final Product product;
+  final bool inCart;
 
-  static void onCartChange(int productID) {
-    if (_productsIDs.contains(productID)) {
-      _productsIDs.remove(productID);
-    } else {
-      _productsIDs.add(productID);
-    }
+  Container titleSection() {
+    return Container(
+        padding: const EdgeInsets.all(32),
+        child: Row(
+          children: [
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    product.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(product.shortDescription)
+              ],
+            ))
+          ],
+        ));
   }
 
-  static bool isInCart(int productID) {
-    return _productsIDs.contains(productID);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.white),
+          color: Colors.white),
+      child: Column(
+        children: [
+          titleSection(),
+          Row(
+            children: [Text('Price: ' + product.price.toString() + ' EGP')],
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class ShoppingCartList extends StatefulWidget {
-  ShoppingCartList({Key key, this.productsList}) : super(key: key);
+  ShoppingCartList({this.target});
 
-  final List<Product> productsList;
+  final Product target;
   @override
   State<ShoppingCartList> createState() => _ShoppingCartListState();
 }
@@ -29,9 +64,9 @@ class ShoppingCartList extends StatefulWidget {
 class _ShoppingCartListState extends State<ShoppingCartList> {
   Set<Product> _shopCart = Set<Product>();
 
-  void _handleCartChanged(Product product, bool inCart) {
+  void _handleCartChanged(Product product) {
     setState(() {
-      if (!inCart) {
+      if (!_shopCart.contains(product)) {
         _shopCart.add(product);
       } else {
         _shopCart.remove(product);
@@ -47,13 +82,14 @@ class _ShoppingCartListState extends State<ShoppingCartList> {
       ),
       body: ListView(
           padding: EdgeInsets.symmetric(vertical: 8.0),
-          children: widget.productsList.map((Product product) {
-            return ShoppingListItem(
-              product: product,
-              inCart: _shopCart.contains(product),
-              onCartChanged: _handleCartChanged,
-            );
-          }).toList()),
+          children: _shopCart.isNotEmpty
+              ? _shopCart.map((Product product) {
+                  return ShoppingCartItem(
+                    product: product,
+                    inCart: _shopCart.contains(product),
+                  );
+                }).toList()
+              : []),
     );
   }
 }

@@ -1,39 +1,21 @@
-import 'dart:ffi';
 import 'dart:ui';
 import 'package:Bayya/ProductView.dart';
-import 'package:Bayya/ShoppingCart.dart';
+import 'package:Bayya/Watchlist.dart';
 import 'package:flutter/material.dart';
-
-class Product {
-  //Constructor
-  Product(
-      {this.id,
-      this.name,
-      this.shortDescription,
-      this.longDescription,
-      this.vendor,
-      this.price,
-      this.category});
-
-  //Fields & Variables
-  final String name, shortDescription, longDescription, vendor;
-  final double price;
-  final int id;
-  bool inShopCart;
-  Float ratings;
-  int quantity;
-  ProductCategory category;
-}
+import 'Product.dart';
+import 'Watchlist.dart';
+import 'ShoppingCart.dart';
 
 typedef void CartChangedCallback(Product product);
 
-enum ProductCategory { clothes, elctronics, food }
-
-class ShoppingListItem extends StatelessWidget {
+class ShoppingListItem extends StatefulWidget {
+  final Product product;
   ShoppingListItem({this.product});
 
-  final Product product;
+  _ShoppingListItemState createState() => _ShoppingListItemState();
+}
 
+class _ShoppingListItemState extends State<ShoppingListItem> {
   Widget titleSection() {
     return Container(
         padding: const EdgeInsets.all(32),
@@ -46,27 +28,34 @@ class ShoppingListItem extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    product.name,
+                    widget.product.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                Text(product.shortDescription)
+                Text(widget.product.shortDescription)
               ],
             ))
           ],
         ));
   }
 
-  GestureDetector _addToCartMinimized({bool inCart = true}) {
+  GestureDetector _addToCartMinimized() {
+    bool inCart = ShoppingCart.instance.isInShoppingCart(widget.product);
     Icon iconShoppingCart = inCart
         ? Icon(Icons.shopping_cart, color: Colors.lightGreen[500])
         : Icon(Icons.add_shopping_cart);
-    
+
     return GestureDetector(
         onTap: () {
-          shopCartSnack();
+          setState(() {
+            if (!inCart) {
+              ShoppingCart.instance.addToShoppingCart(widget.product);
+            } else {
+              ShoppingCart.instance.removeFromShoppingCart(widget.product);
+            }
+          });
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -77,18 +66,29 @@ class ShoppingListItem extends StatelessWidget {
         ));
   }
 
-  GestureDetector _watchlistMinimized({bool isWatchlisted = false}) {
+  GestureDetector _watchlistMinimized() {
+    bool isWatchlisted = Watchlist.instance.getWatchlisted(widget.product);
     Icon iconWatchlist = isWatchlisted
         ? Icon(Icons.favorite, color: Colors.red)
         : Icon(Icons.favorite_border);
     return GestureDetector(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        iconWatchlist,
-      ],
-    ));
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          iconWatchlist,
+        ],
+      ),
+      onTap: () {
+        setState(() {
+          if (!isWatchlisted) {
+            Watchlist.instance.setWatchlisted(widget.product);
+          } else {
+            Watchlist.instance.unWatchlist(widget.product);
+          }
+        });
+      },
+    );
   }
 
   Widget buttonsMinimized() {
@@ -117,9 +117,11 @@ class ShoppingListItem extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductView(product: product)));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProductView(product: widget.product)))
+              .then((value) => setState(() {}));
         },
         child: Container(
           margin: const EdgeInsets.all(4),
@@ -130,7 +132,9 @@ class ShoppingListItem extends StatelessWidget {
             children: [
               titleSection(),
               Row(
-                children: [Text('Price: ' + product.price.toString() + ' EGP')],
+                children: [
+                  Text('Price: ' + widget.product.price.toString() + ' EGP')
+                ],
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
               ),

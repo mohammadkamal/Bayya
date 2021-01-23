@@ -1,5 +1,6 @@
 
 import 'package:Bayya/ShoppingCart.dart';
+import 'package:Bayya/Watchlist.dart';
 import 'package:flutter/material.dart';
 
 class AppSideBar extends StatelessWidget
@@ -33,7 +34,9 @@ class AppSideBar extends StatelessWidget
               ListTile(
                 title: Text('Watchlist'),
                 leading: Icon(Icons.favorite, color: Colors.red),
-                onTap: null,
+                onTap: () {
+                  Navigator.of(context).push(_createRouteToWatchlist());
+                },
               ),
               ListTile(
                 title: Text('Account'),
@@ -49,6 +52,25 @@ class AppSideBar extends StatelessWidget
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             ShoppingCartList(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(0.0, 1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
+  }
+
+  Route _createRouteToWatchlist() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            ViewWatchList(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           var begin = Offset(0.0, 1.0);
           var end = Offset.zero;

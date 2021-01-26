@@ -1,19 +1,18 @@
-import 'dart:ui';
-import 'package:Bayya/ProductView.dart';
-import 'package:Bayya/Watchlist.dart';
 import 'package:flutter/material.dart';
+
 import 'Product.dart';
-import 'Watchlist.dart';
+import 'ProductView.dart';
 import 'ShoppingCart.dart';
 
-class ShoppingListItem extends StatefulWidget {
+class WatchlistItem extends StatefulWidget {
+  WatchlistItem({this.product});
   final Product product;
-  ShoppingListItem({this.product});
 
-  _ShoppingListItemState createState() => _ShoppingListItemState();
+  @override
+  _WatchlistItemState createState() => _WatchlistItemState();
 }
 
-class _ShoppingListItemState extends State<ShoppingListItem> {
+class _WatchlistItemState extends State<WatchlistItem> {
   Widget _imageSection() {
     return Container(
         child: Image(
@@ -73,7 +72,8 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     );
   }
 
-  Widget _buttonToCart() {
+  Widget _addToCart()
+  {
     bool inCart = ShoppingCart.instance.isInShoppingCart(widget.product);
     Icon iconShoppingCart = inCart
         ? Icon(Icons.shopping_cart, color: Colors.white)
@@ -86,7 +86,6 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
             } else {
               ShoppingCart.instance.removeFromShoppingCart(widget.product);
             }
-            Scaffold.of(context).showSnackBar(_snackBarCart(inCart));
           });
         },
         child: Container(
@@ -107,40 +106,12 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
         ));
   }
 
-  Widget _buttonToWatchlist() {
-    bool watchlisted = Watchlist.instance.getWatchlisted(widget.product);
-    Icon iconWatchlist = watchlisted
-        ? Icon(Icons.favorite, color: Colors.red)
-        : Icon(Icons.favorite_border_outlined);
-    return GestureDetector(
-        onTap: () {
-          setState(() {
-            if (!watchlisted) {
-              Watchlist.instance.setWatchlisted(widget.product);
-            } else {
-              Watchlist.instance.unWatchlist(widget.product);
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(1), color: Colors.grey[400]),
-          child: Column(
-            children: [iconWatchlist],
-          ),
-        ));
-  }
-
   Widget _buttonSection() {
     return Container(
       padding: const EdgeInsets.all(4),
       child: Row(
         children: [
-          Column(children: [_buttonToCart()]),
-          Column(
-            children: [_buttonToWatchlist()],
-          )
+          Column(children: [_addToCart()]),
         ],
       ),
     );
@@ -170,39 +141,22 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProductView(product: widget.product)))
-            .then((value) => setState(() {}));
-      },
-      child: Container(
+        onTap: () {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProductView(product: widget.product)))
+              .then((value) => setState(() {}));
+        },
+        child: Container(
           margin: const EdgeInsets.all(2),
           decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1, color: Colors.white)),
+              border: Border.all(width: 1, color: Colors.white),
+              color: Colors.white),
           child: Row(
             children: [_leftColumn(), _rightColumn()],
-          )),
-    );
-  }
-
-  SnackBar _snackBarCart(bool inCart) {
-    return SnackBar(
-      content: Text(widget.product.name +
-          (!inCart
-              ? ' was added to shopping cart'
-              : ' was removed from shopping cart')),
-      action: SnackBarAction(
-        label: 'Undo',
-        onPressed: () {
-          !inCart
-              ? ShoppingCart.instance.removeFromShoppingCart(widget.product)
-              : ShoppingCart.instance.addToShoppingCart(widget.product);
-          setState(() {});
-        },
-      ),
-    );
+          ),
+        ));
   }
 }

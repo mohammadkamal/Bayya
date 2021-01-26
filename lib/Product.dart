@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'package:flutter/cupertino.dart';
 
 enum ProductCategory { clothes, elctronics, food }
 
@@ -11,13 +11,15 @@ class Product {
       this.longDescription,
       this.vendor,
       this.price,
-      this.category});
+      this.category,
+      this.image});
 
   //Fields & Variables
   final String name, shortDescription, longDescription, vendor;
-  final double price;
+  final double price; //To do: --> remove 'final' keyword
   final int id;
-  Float ratings;
+  final Image image;
+  //Float ratings; //To do: --> To be added some time later
   int quantity;
   ProductCategory category;
 }

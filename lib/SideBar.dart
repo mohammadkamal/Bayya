@@ -1,9 +1,15 @@
 
-import 'package:Bayya/ShoppingCart.dart';
-import 'package:Bayya/Watchlist.dart';
 import 'package:flutter/material.dart';
 
-class AppSideBar extends StatelessWidget
+import 'ShoppingCartList.dart';
+import 'ViewWatchList.dart';
+
+class AppSideBar extends StatefulWidget
+{
+  _AppSideBarState createState() => _AppSideBarState();
+}
+
+class _AppSideBarState extends State<AppSideBar>
 {
   @override
   Widget build(BuildContext context)

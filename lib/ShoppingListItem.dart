@@ -1,10 +1,11 @@
 import 'dart:ui';
+import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/ProductView.dart';
 import 'package:Bayya/Watchlist.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Product.dart';
 import 'Watchlist.dart';
-import 'ShoppingCart.dart';
 
 class ShoppingListItem extends StatefulWidget {
   final Product product;
@@ -74,20 +75,14 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   }
 
   Widget _buttonToCart() {
-    bool inCart = ShoppingCart.instance.isInShoppingCart(widget.product);
-    Icon iconShoppingCart = inCart
-        ? Icon(Icons.shopping_cart, color: Colors.white)
-        : Icon(Icons.add_shopping_cart, color: Colors.white);
     return GestureDetector(
         onTap: () {
-          setState(() {
-            if (!inCart) {
-              ShoppingCart.instance.addToShoppingCart(widget.product);
-            } else {
-              ShoppingCart.instance.removeFromShoppingCart(widget.product);
-            }
-            Scaffold.of(context).showSnackBar(_snackBarCart(inCart));
-          });
+          context.read<ShoppingCart>().isInShoppingCart(widget.product)
+              ? context
+                  .read<ShoppingCart>()
+                  .removeFromShoppingCart(widget.product)
+              : context.read<ShoppingCart>().addToShoppingCart(widget.product);
+          Scaffold.of(context).showSnackBar(_snackBarCart());
         },
         child: Container(
           width: 120,
@@ -97,9 +92,17 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               color: Colors.lightGreen[500]),
           child: Row(
             children: [
-              iconShoppingCart,
+              Icon(
+                  Provider.of<ShoppingCart>(context)
+                          .isInShoppingCart(widget.product)
+                      ? Icons.shopping_cart
+                      : Icons.add_shopping_cart,
+                  color: Colors.white),
               Text(
-                inCart ? 'In cart' : 'Add to cart',
+                Provider.of<ShoppingCart>(context)
+                        .isInShoppingCart(widget.product)
+                    ? 'In cart'
+                    : 'Add to cart',
                 style: TextStyle(color: Colors.white),
               )
             ],
@@ -108,19 +111,15 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   }
 
   Widget _buttonToWatchlist() {
-    bool watchlisted = Watchlist.instance.getWatchlisted(widget.product);
-    Icon iconWatchlist = watchlisted
-        ? Icon(Icons.favorite, color: Colors.red)
-        : Icon(Icons.favorite_border_outlined);
+    Icon iconWatchlist =
+        Provider.of<Watchlist>(context).getWatchlisted(widget.product)
+            ? Icon(Icons.favorite, color: Colors.red)
+            : Icon(Icons.favorite_border_outlined);
     return GestureDetector(
         onTap: () {
-          setState(() {
-            if (!watchlisted) {
-              Watchlist.instance.setWatchlisted(widget.product);
-            } else {
-              Watchlist.instance.unWatchlist(widget.product);
-            }
-          });
+          context.read<Watchlist>().getWatchlisted(widget.product)
+              ? context.read<Watchlist>().unWatchlist(widget.product)
+              : context.read<Watchlist>().setWatchlisted(widget.product);
         },
         child: Container(
           padding: const EdgeInsets.all(4),
@@ -172,10 +171,9 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProductView(product: widget.product)))
-            .then((value) => setState(() {}));
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductView(product: widget.product)));
       },
       child: Container(
           margin: const EdgeInsets.all(2),
@@ -188,19 +186,20 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     );
   }
 
-  SnackBar _snackBarCart(bool inCart) {
+  SnackBar _snackBarCart() {
     return SnackBar(
       content: Text(widget.product.name +
-          (!inCart
+          (context.read<ShoppingCart>().isInShoppingCart(widget.product)
               ? ' was added to shopping cart'
               : ' was removed from shopping cart')),
       action: SnackBarAction(
         label: 'Undo',
         onPressed: () {
-          !inCart
-              ? ShoppingCart.instance.removeFromShoppingCart(widget.product)
-              : ShoppingCart.instance.addToShoppingCart(widget.product);
-          setState(() {});
+          context.read<ShoppingCart>().isInShoppingCart(widget.product)
+              ? context
+                  .read<ShoppingCart>()
+                  .removeFromShoppingCart(widget.product)
+              : context.read<ShoppingCart>().addToShoppingCart(widget.product);
         },
       ),
     );

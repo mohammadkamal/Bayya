@@ -1,12 +1,14 @@
+import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Product.dart';
+import 'package:Bayya/ProductView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'Product.dart';
-import 'ProductView.dart';
+import 'package:provider/provider.dart';
+
 
 class ShoppingCartItem extends StatefulWidget {
-  ShoppingCartItem({this.product, this.orderQuantity = 1});
+  ShoppingCartItem({this.product});
   final Product product;
-  int orderQuantity;
 
   @override
   _ShoppingCartItemState createState() => _ShoppingCartItemState();
@@ -76,17 +78,15 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
     return IconButton(
         icon: Icon(Icons.remove_circle_outline),
         onPressed: () {
-          setState(() {
-            widget.orderQuantity <= 1
-                ? widget.orderQuantity = 1
-                : widget.orderQuantity--;
-          });
+          context.read<ShoppingCart>().decrement(widget.product);
         });
   }
 
   Widget _quantityText() {
     return Container(
-      child: Text(widget.orderQuantity.toString()),
+      child: Text(Provider.of<ShoppingCart>(context)
+          .getQuantity(widget.product)
+          .toString()),
     );
   }
 
@@ -95,7 +95,7 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
         icon: Icon(Icons.add_circle_outline),
         onPressed: () {
           setState(() {
-            widget.orderQuantity++;
+            context.read<ShoppingCart>().increment(widget.product);
           });
         });
   }

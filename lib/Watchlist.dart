@@ -1,23 +1,25 @@
+import 'dart:collection';
+import 'package:flutter/foundation.dart';
+
 import 'Product.dart';
 
-class Watchlist {
-  Watchlist._privateConstructor();
+class Watchlist extends ChangeNotifier {
+  Map<int, Product> _watchlistMap = new Map<int, Product>();
 
-  static final Watchlist _instance = Watchlist._privateConstructor();
-
-  static Watchlist get instance => _instance;
-
-  Map<int, Product> watchlistMap = new Map<int, Product>();
+  UnmodifiableMapView<int, Product> get watchlistMap =>
+      UnmodifiableMapView(_watchlistMap);
 
   void setWatchlisted(Product product) {
-    watchlistMap[product.id] = product;
+    _watchlistMap[product.id] = product;
+    notifyListeners();
   }
 
   void unWatchlist(Product product) {
-    watchlistMap.remove(product.id);
+    _watchlistMap.remove(product.id);
+    notifyListeners();
   }
 
   bool getWatchlisted(Product product) {
-    return watchlistMap.containsKey(product.id);
+    return _watchlistMap.containsKey(product.id);
   }
 }

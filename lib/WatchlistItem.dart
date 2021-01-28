@@ -1,8 +1,9 @@
+import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'Product.dart';
 import 'ProductView.dart';
-import 'ShoppingCart.dart';
 
 class WatchlistItem extends StatefulWidget {
   WatchlistItem({this.product});
@@ -72,21 +73,14 @@ class _WatchlistItemState extends State<WatchlistItem> {
     );
   }
 
-  Widget _addToCart()
-  {
-    bool inCart = ShoppingCart.instance.isInShoppingCart(widget.product);
-    Icon iconShoppingCart = inCart
-        ? Icon(Icons.shopping_cart, color: Colors.white)
-        : Icon(Icons.add_shopping_cart, color: Colors.white);
+  Widget _addToCart() {
     return GestureDetector(
         onTap: () {
-          setState(() {
-            if (!inCart) {
-              ShoppingCart.instance.addToShoppingCart(widget.product);
-            } else {
-              ShoppingCart.instance.removeFromShoppingCart(widget.product);
-            }
-          });
+          context.read<ShoppingCart>().isInShoppingCart(widget.product)
+              ? context
+                  .read<ShoppingCart>()
+                  .removeFromShoppingCart(widget.product)
+              : context.read<ShoppingCart>().addToShoppingCart(widget.product);
         },
         child: Container(
           width: 120,
@@ -96,9 +90,17 @@ class _WatchlistItemState extends State<WatchlistItem> {
               color: Colors.lightGreen[500]),
           child: Row(
             children: [
-              iconShoppingCart,
+              Icon(
+                  Provider.of<ShoppingCart>(context)
+                          .isInShoppingCart(widget.product)
+                      ? Icons.shopping_cart
+                      : Icons.add_shopping_cart,
+                  color: Colors.white),
               Text(
-                inCart ? 'In cart' : 'Add to cart',
+                Provider.of<ShoppingCart>(context)
+                        .isInShoppingCart(widget.product)
+                    ? 'In cart'
+                    : 'Add to cart',
                 style: TextStyle(color: Colors.white),
               )
             ],

@@ -1,8 +1,9 @@
-import 'ShoppingCart.dart';
+import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Product.dart';
-import 'ShoppingCartList.dart';
 import 'Watchlist.dart';
 
 class ProductView extends StatefulWidget {
@@ -93,25 +94,25 @@ class _ProductViewState extends State<ProductView> {
   }
 
   Widget _wideAddToCart() {
-    bool isInCart = ShoppingCart.instance.isInShoppingCart(widget.product);
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isInCart
-              ? ShoppingCart.instance.removeFromShoppingCart(widget.product)
-              : ShoppingCart.instance.addToShoppingCart(widget.product);
-        });
+        _onAddToCartTap();
       },
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            color: isInCart ? Colors.red[400] : Colors.lightGreen[500],
+            color: Provider.of<ShoppingCart>(context)
+                    .isInShoppingCart(widget.product)
+                ? Colors.red[400]
+                : Colors.lightGreen[500],
             borderRadius: BorderRadius.circular(8)),
         width: 350,
         height: 50,
         child: Center(
             child: Text(
-          isInCart ? 'Remove from cart' : 'Add to cart',
+          Provider.of<ShoppingCart>(context).isInShoppingCart(widget.product)
+              ? 'Remove from cart'
+              : 'Add to cart',
           style: TextStyle(color: Colors.white, fontSize: 20),
           softWrap: true,
         )),
@@ -140,62 +141,32 @@ class _ProductViewState extends State<ProductView> {
 
   Widget _upperIconWatchlist() {
     return IconButton(
-        icon: Watchlist.instance.getWatchlisted(widget.product)
+        icon: Provider.of<Watchlist>(context).getWatchlisted(widget.product)
             ? Icon(Icons.favorite, color: Colors.red)
             : Icon(Icons.favorite_border),
         onPressed: () {
-          setState(() {
-            Watchlist.instance.getWatchlisted(widget.product)
-                ? Watchlist.instance.unWatchlist(widget.product)
-                : Watchlist.instance.setWatchlisted(widget.product);
-          });
-        });
-  }
-
-  Widget _upperToShoppingCart() {
-    return IconButton(
-        icon: Icon(Icons.shopping_cart, color: Colors.white),
-        onPressed: () {
-          Navigator.of(context)
-              .push(_createRouteToShoppingCart())
-              .then((value) {
-            setState(() {});
-          });
-        });
-  }
-
-  Route _createRouteToShoppingCart() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            ShoppingCartList(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
+          context.read<Watchlist>().getWatchlisted(widget.product)
+              ? context.read<Watchlist>().unWatchlist(widget.product)
+              : context.read<Watchlist>().setWatchlisted(widget.product);
         });
   }
 
   Widget _floatingAddToCart() {
     return FloatingActionButton(
         tooltip: 'Add to cart',
-        child: ShoppingCart.instance.isInShoppingCart(widget.product)
-            ? Icon(Icons.remove_shopping_cart)
-            : Icon(Icons.add_shopping_cart),
+        child:
+            Provider.of<ShoppingCart>(context).isInShoppingCart(widget.product)
+                ? Icon(Icons.remove_shopping_cart)
+                : Icon(Icons.add_shopping_cart),
         onPressed: () {
-          setState(() {
-            ShoppingCart.instance.isInShoppingCart(widget.product)
-                ? ShoppingCart.instance.removeFromShoppingCart(widget.product)
-                : ShoppingCart.instance.addToShoppingCart(widget.product);
-          });
+          _onAddToCartTap();
         });
+  }
+
+  void _onAddToCartTap() {
+    context.read<ShoppingCart>().isInShoppingCart(widget.product)
+        ? context.read<ShoppingCart>().removeFromShoppingCart(widget.product)
+        : context.read<ShoppingCart>().addToShoppingCart(widget.product);
   }
 
   @override
@@ -203,7 +174,7 @@ class _ProductViewState extends State<ProductView> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.product.name),
-          actions: <Widget>[_upperIconWatchlist(), _upperToShoppingCart()],
+          actions: <Widget>[_upperIconWatchlist(), ShoppingCartUpperIcon()],
         ),
         body: Container(
             color: Colors.grey[300],

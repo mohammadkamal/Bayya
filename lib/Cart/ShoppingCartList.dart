@@ -1,9 +1,8 @@
-import 'package:Bayya/Product.dart';
+import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Cart/ShoppingCartItem.dart';
+import 'package:Bayya/Product/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'ShoppingCart.dart';
-import 'ShoppingCartItem.dart';
 
 class ShoppingCartList extends StatelessWidget {
   @override

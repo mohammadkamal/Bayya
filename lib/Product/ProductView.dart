@@ -1,10 +1,10 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
+import 'package:Bayya/Product/Product.dart';
+import 'package:Bayya/Watchlist/Watchlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Product.dart';
-import 'Watchlist.dart';
 
 class ProductView extends StatefulWidget {
   ProductView({this.product});

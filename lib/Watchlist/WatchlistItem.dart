@@ -1,9 +1,8 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Product/Product.dart';
+import 'package:Bayya/Product/ProductView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'Product.dart';
-import 'ProductView.dart';
 
 class WatchlistItem extends StatefulWidget {
   WatchlistItem({this.product});

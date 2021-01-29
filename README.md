@@ -3,7 +3,7 @@
 An e-commerce flutter application
 
 ## Demo
-[![Demo](https://img.youtube.com/vi/8c1dGiga2J8/0.jpg)](https://www.youtube.com/watch?v=8c1dGiga2J8)
+[![Demo](https://img.youtube.com/vi/Gj34dG4w6Mk/0.jpg)](https://www.youtube.com/watch?v=Gj34dG4w6Mk)
 
 ## Description
 ### Homepage
@@ -16,13 +16,10 @@ An e-commerce flutter application
 
 ### Product page
 <p>Product page currently contains some details about the products itself.</p>
-<img src="/docs/product_screenshot.png" width="250" />
 
-<p>After clicking shopping cart icon:</p>
-<img src="/docs/product_added_to_shopping_cart.png" width="250" />
-
-<p>After clicking watchlist icon:</p>
-<img src="/docs/product_watchlisted.png" width="250" />
+Main product page | Click cart icon | Click watchlist icon
+------------ | ------------- | ------------- | -------------
+<img src="/docs/product_screenshot.png" width="250" /> | <img src="/docs/product_added_to_shopping_cart.png" width="250" /> | <img src="/docs/product_watchlisted.png" width="250" />
 
 ### Shopping Cart page
 <p>This page tracks the products added by the user to shopping cart.</p>
@@ -31,3 +28,7 @@ An e-commerce flutter application
 ### Watchlist page
 <p>This page tracks watchlisted products (or saved) by the user.</p>
 <img src="/docs/watchlist.png" width="250" />
+
+### Search page
+<p>This page is used to search desired products by name instead looking through the whole catalog.</p>
+<img src="/docs/search_page.png" width="250" />

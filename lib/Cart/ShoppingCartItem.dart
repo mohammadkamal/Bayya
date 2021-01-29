@@ -1,6 +1,6 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
-import 'package:Bayya/Product.dart';
-import 'package:Bayya/ProductView.dart';
+import 'package:Bayya/Product/Product.dart';
+import 'package:Bayya/Product/ProductView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:Bayya/Product.dart';
+import 'package:Bayya/Product/Product.dart';
 import 'package:flutter/foundation.dart';
 
 class ShoppingCart extends ChangeNotifier {

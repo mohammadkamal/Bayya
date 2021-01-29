@@ -1,10 +1,9 @@
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
+import 'package:Bayya/Product/Product.dart';
+import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:Bayya/Watchlist/WatchlistItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'Product.dart';
-import 'Watchlist.dart';
-import 'WatchlistItem.dart';
 
 class ViewWatchList extends StatelessWidget {
   @override

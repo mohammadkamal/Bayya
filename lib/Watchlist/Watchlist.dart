@@ -1,7 +1,6 @@
 import 'dart:collection';
+import 'package:Bayya/Product/Product.dart';
 import 'package:flutter/foundation.dart';
-
-import 'Product.dart';
 
 class Watchlist extends ChangeNotifier {
   Map<int, Product> _watchlistMap = new Map<int, Product>();

@@ -1,6 +1,7 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Product/ProductView.dart';
+import 'package:Bayya/Watchlist/Watchlist.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -139,6 +140,12 @@ class _WatchlistItemState extends State<WatchlistItem> {
         ));
   }
 
+  Widget _unWatchlistSnackBar() {
+    return SnackBar(
+      content: Text(widget.product.name + ' was removed from watclist'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -150,13 +157,20 @@ class _WatchlistItemState extends State<WatchlistItem> {
                           ProductView(product: widget.product)))
               .then((value) => setState(() {}));
         },
-        child: Container(
-          margin: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.white),
-              color: Colors.white),
-          child: Row(
-            children: [_leftColumn(), _rightColumn()],
+        child: Dismissible(
+          key: Key(widget.product.name),
+          onDismissed: (direction) {
+            context.read<Watchlist>().unWatchlist(widget.product);
+            Scaffold.of(context).showSnackBar(_unWatchlistSnackBar());
+          },
+          child: Container(
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.white),
+                color: Colors.white),
+            child: Row(
+              children: [_leftColumn(), _rightColumn()],
+            ),
           ),
         ));
   }

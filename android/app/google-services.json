@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "279218039654",
+    "project_id": "bayya-a8013",
+    "storage_bucket": "bayya-a8013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279218039654:android:2ef9d9cd4a5c1b4bca76a7",
+        "android_client_info": {
+          "package_name": "com.example.Bayya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vlXeJscS0IRkRAqODZEpsvKCB611DUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

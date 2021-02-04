@@ -3,12 +3,12 @@ import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/Catalog/ShoppingListItem.dart';
 import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Search/SearchPage.dart';
-import 'package:Bayya/SideBar.dart';
+import 'package:Bayya/SideDrawer/SideBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingList extends StatefulWidget {
-
+  @override
   _ShoppingListState createState() => _ShoppingListState();
 }
 

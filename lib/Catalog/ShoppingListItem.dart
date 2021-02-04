@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
 import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Product/ProductView.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
@@ -10,6 +11,7 @@ class ShoppingListItem extends StatefulWidget {
   final Product product;
   ShoppingListItem({this.product});
 
+  @override
   _ShoppingListItemState createState() => _ShoppingListItemState();
 }
 
@@ -41,17 +43,6 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
           textAlign: TextAlign.left,
           softWrap: true,
         ));
-  }
-
-  Widget _descText() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Text(
-        widget.product.shortDescription,
-        textAlign: TextAlign.left,
-        softWrap: true,
-      ),
-    );
   }
 
   Widget _priceText() {
@@ -154,7 +145,11 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               children: [_titleText()],
             ),
             Row(
-              children: [_descText()],
+              children: [
+                ShortDescriptionText(
+                    bottomPadding: 4,
+                    shortDescription: widget.product.shortDescription)
+              ],
             ),
             Row(children: [_priceText()]),
             Row(

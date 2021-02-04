@@ -1,4 +1,4 @@
-enum UserType { consumer, vendor }
+enum UserType { consumer, vendor, admin }
 
 class User {
   User({this.username, this.password, this.email, this.userType});

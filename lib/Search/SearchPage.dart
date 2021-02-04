@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
+  @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  bool typing = false;
+  bool typing = true;
   final textController = TextEditingController();
   List<Product> _list = new List<Product>();
 
@@ -21,7 +22,8 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _searchTextField() {
     return TextField(
-      decoration: InputDecoration(border: InputBorder.none, hintText: 'type something here'),
+      decoration: InputDecoration(
+          border: InputBorder.none, hintText: 'type something here'),
       controller: textController,
     );
   }
@@ -48,7 +50,9 @@ class _SearchPageState extends State<SearchPage> {
                   _list.clear();
                 }
                 context.read<Catalog>().productsList.forEach((element) {
-                  if (element.name.contains(this.textController.text)) {
+                  if (element.name
+                      .toLowerCase()
+                      .contains(this.textController.text.toLowerCase())) {
                     _list.add(element);
                   }
                 });

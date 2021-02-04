@@ -1,16 +1,16 @@
-import 'package:Bayya/Cart/ShoppingCartList.dart';
+import 'package:Bayya/User/AccountVistorPage.dart';
 import 'package:flutter/material.dart';
 
-class ShoppingCartUpperIcon extends StatefulWidget {
+class AccountCard extends StatefulWidget {
   @override
-  _ShoppingCartUpperIconState createState() => _ShoppingCartUpperIconState();
+  _AccountCardState createState() => _AccountCardState();
 }
 
-class _ShoppingCartUpperIconState extends State<ShoppingCartUpperIcon> {
-  Route _createRouteToShoppingCart() {
+class _AccountCardState extends State<AccountCard> {
+  Route _createRouteToAccountVistor() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            ShoppingCartList(),
+            AccountVistorPage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           var begin = Offset(0.0, 1.0);
           var end = Offset.zero;
@@ -28,11 +28,11 @@ class _ShoppingCartUpperIconState extends State<ShoppingCartUpperIcon> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.shopping_cart, color: Colors.white),
-      onPressed: () {
-        Navigator.of(context).push(_createRouteToShoppingCart());
-      },
-    );
+    return ListTile(
+        title: Text('Account'),
+        leading: Icon(Icons.person, color: Colors.grey),
+        onTap: () {
+          Navigator.of(context).push(_createRouteToAccountVistor());
+        });
   }
 }

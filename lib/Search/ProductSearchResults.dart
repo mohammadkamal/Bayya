@@ -7,6 +7,7 @@ class ProductSearchResults extends StatefulWidget {
 
   const ProductSearchResults({Key key, this.matchResults}) : super(key: key);
   
+  @override
   _ProductSearchResultsState createState() => _ProductSearchResultsState();
 }
 

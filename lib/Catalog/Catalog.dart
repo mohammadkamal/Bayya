@@ -9,14 +9,12 @@ class Catalog extends ChangeNotifier {
   UnmodifiableListView<Product> get productsList =>
       UnmodifiableListView(_productsList);
 
-  void addProduct(Product product)
-  {
+  void addProduct(Product product) {
     _productsList.add(product);
     notifyListeners();
   }
 
-  void removeProduct(Product product)
-  {
+  void removeProduct(Product product) {
     _productsList.remove(product);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
+import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
 import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ class ProductView extends StatefulWidget {
   ProductView({this.product});
   final Product product;
 
+  @override
   _ProductViewState createState() => _ProductViewState();
 }
 
@@ -24,16 +26,6 @@ class _ProductViewState extends State<ProductView> {
       child: Text(widget.product.name,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           softWrap: true),
-    );
-  }
-
-  Widget _shortDescriptionText() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        widget.product.shortDescription,
-        softWrap: true,
-      ),
     );
   }
 
@@ -56,7 +48,9 @@ class _ProductViewState extends State<ProductView> {
             children: [_titleText()],
           ),
           Row(children: [
-            _shortDescriptionText(),
+            ShortDescriptionText(
+                shortDescription: widget.product.shortDescription,
+                bottomPadding: 8),
           ]),
           Row(
             children: [_priceText()],

@@ -23,14 +23,17 @@ class _ShoppingListState extends State<ShoppingList> {
   }
 
   Widget _productsList() {
+    List<Product> _tempShopList = new List<Product>();
+    Provider.of<Catalog>(context)
+        .productsCatalog
+        .forEach((key, value) => _tempShopList.add(value));
     return ListView(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      children: Provider.of<Catalog>(context).productsList.isNotEmpty
-          ? Provider.of<Catalog>(context).productsList.map((Product product) {
-              return ShoppingListItem(product: product);
-            }).toList()
-          : [],
-    );
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        children: _tempShopList.isNotEmpty
+            ? _tempShopList.map((Product product) {
+                return ShoppingListItem(product: product);
+              }).toList()
+            : []);
   }
 
   @override

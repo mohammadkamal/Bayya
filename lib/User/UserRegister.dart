@@ -1,4 +1,5 @@
 import 'package:Bayya/User/UserInfoLabelForm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserRegister extends StatefulWidget {
@@ -8,29 +9,34 @@ class UserRegister extends StatefulWidget {
 
 class _UserRegisterState extends State<UserRegister> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController passCtrl = TextEditingController();
+  final TextEditingController emailCtrl = TextEditingController();
 
-  Widget _userName() {
+  Widget _email() {
     return Padding(
-        padding: const EdgeInsets.only(right: 10, left: 10),
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: null,
-            labelText: 'Enter your username',
-          ),
-          autofocus: true,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'This field is required';
+      padding: const EdgeInsets.only(right: 10, left: 10),
+      child: TextFormField(
+        controller: emailCtrl,
+        decoration: InputDecoration(labelText: 'Enter your e-mail'),
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'This field is required';
+          } else {
+            if (!value.contains('@')) {
+              return 'Field must contain @';
             }
-            return null;
-          },
-        ));
+          }
+          return null;
+        },
+      ),
+    );
   }
 
   Widget _password() {
     return Padding(
         padding: const EdgeInsets.only(right: 10, left: 10),
         child: TextFormField(
+          controller: passCtrl,
           decoration: InputDecoration(labelText: 'Enter your password'),
           obscureText: true,
           validator: (value) {
@@ -42,43 +48,57 @@ class _UserRegisterState extends State<UserRegister> {
         ));
   }
 
-  Widget _confirmPassword() {
-    return Padding(
-        padding: const EdgeInsets.only(right: 10, left: 10),
-        child: TextFormField(
-          decoration: InputDecoration(labelText: 'Re-enter your password'),
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'This field is required';
-            }
-            return null;
-          },
-        ));
-  }
-
-  Widget _email() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10, left: 10),
-      child: TextFormField(
-        decoration: InputDecoration(labelText: 'Enter your e-mail'),
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'This field is required';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
   Widget _submitButton() {
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {}
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Container(child: LinearProgressIndicator()),
+                      );
+                    });
+                // ignore: unused_local_variable
+                var result = await _register()
+                    .whenComplete(() => Navigator.pop(context))
+                    .then((value) =>
+                        Navigator.popUntil(context, ModalRoute.withName('/')));
+              }
             },
             child: Text('Submit')));
+  }
+
+  Future<void> _register() async {
+    String msg = '';
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailCtrl.text, password: passCtrl.text);
+      print('success');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+        msg = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+        msg = 'The account already exists for that email.';
+      }
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(content: Container(child: Text(msg)));
+          });
+    } catch (e) {
+      print(e);
+      msg = e.toString();
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(content: Container(child: Text(msg)));
+          });
+    }
   }
 
   Widget _mainForm() {
@@ -88,14 +108,10 @@ class _UserRegisterState extends State<UserRegister> {
           children: [
             Column(
               children: <Widget>[
-                UserInfoLabelForm(text: 'Username:'),
-                _userName(),
-                UserInfoLabelForm(text: 'Password'),
-                _password(),
-                UserInfoLabelForm(text: 'Confirm password'),
-                _confirmPassword(),
                 UserInfoLabelForm(text: 'E-mail:'),
                 _email(),
+                UserInfoLabelForm(text: 'Password'),
+                _password(),
                 _submitButton(),
               ],
             ),

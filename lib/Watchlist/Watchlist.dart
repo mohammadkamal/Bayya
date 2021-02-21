@@ -21,4 +21,13 @@ class Watchlist extends ChangeNotifier {
   bool getWatchlisted(Product product) {
     return _watchlistMap.containsKey(product.id);
   }
+
+  Map<String, dynamic> toJson() => {
+    
+  };
+
+  Future<void> updateDB() async
+  {
+    
+  }
 }

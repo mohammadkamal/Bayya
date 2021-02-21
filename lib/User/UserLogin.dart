@@ -1,4 +1,6 @@
+import 'package:Bayya/User/ForgetPassword.dart';
 import 'package:Bayya/User/UserInfoLabelForm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserLogin extends StatefulWidget {
@@ -8,14 +10,17 @@ class UserLogin extends StatefulWidget {
 
 class _UserLoginState extends State<UserLogin> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController passCtrl = TextEditingController();
+  final TextEditingController emailCtrl = TextEditingController();
 
-  Widget _userName() {
+  Widget _email() {
     return Padding(
         padding: const EdgeInsets.only(right: 10, left: 10),
         child: TextFormField(
+          controller: emailCtrl,
           decoration: InputDecoration(
             border: null,
-            labelText: 'Enter your username',
+            labelText: 'Enter your email',
           ),
           autofocus: true,
           validator: (value) {
@@ -31,6 +36,7 @@ class _UserLoginState extends State<UserLogin> {
     return Padding(
         padding: const EdgeInsets.only(right: 10, left: 10),
         child: TextFormField(
+          controller: passCtrl,
           decoration: InputDecoration(labelText: 'Enter your password'),
           obscureText: true,
           validator: (value) {
@@ -53,26 +59,60 @@ class _UserLoginState extends State<UserLogin> {
       ),
       onTap: () {
         return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Container(
-                  child: Text('Enter your e-mail'),
-                ),
-              );
-            });
+            context: context, builder: (context) => ForgetPassword());
       },
     );
+  }
+
+  Widget _loadingWhenTap() {
+    return Container(child: LinearProgressIndicator());
   }
 
   Widget _loginButton() {
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {}
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: _loadingWhenTap(),
+                      );
+                    });
+                // ignore: unused_local_variable
+                var result = await _login()
+                    .whenComplete(() => Navigator.pop(context))
+                    .then((value) => Navigator
+                      .popUntil(context, ModalRoute.withName('/')));
+              }
             },
             child: Text('Login')));
+  }
+
+  Future<void> _login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailCtrl.text, password: passCtrl.text);
+    } on FirebaseAuthException catch (e) {
+      String msg = '';
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        msg = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        msg = 'Wrong password provided for that user.';
+      } else {
+        print(e.code);
+        msg = e.code;
+      }
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(content: Container(child: Text(msg)));
+          });
+    }
   }
 
   Widget _mainForm() {
@@ -82,8 +122,8 @@ class _UserLoginState extends State<UserLogin> {
         children: [
           Column(
             children: <Widget>[
-              UserInfoLabelForm(text: 'Username:'),
-              _userName(),
+              UserInfoLabelForm(text: 'Email:'),
+              _email(),
               UserInfoLabelForm(text: 'Password'),
               _password(),
               _forgotPassword(),

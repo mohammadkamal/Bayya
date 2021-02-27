@@ -1,7 +1,6 @@
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
 import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/Catalog/ShoppingListItem.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Search/SearchPage.dart';
 import 'package:Bayya/SideDrawer/SideBar.dart';
 import 'package:flutter/material.dart';
@@ -23,17 +22,13 @@ class _ShoppingListState extends State<ShoppingList> {
   }
 
   Widget _productsList() {
-    List<Product> _tempShopList = new List<Product>();
-    Provider.of<Catalog>(context)
-        .productsCatalog
-        .forEach((key, value) => _tempShopList.add(value));
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 8.0),
-        children: _tempShopList.isNotEmpty
-            ? _tempShopList.map((Product product) {
-                return ShoppingListItem(product: product);
+        children: context.read<Catalog>().productsCatalog.isNotEmpty
+            ? context.read<Catalog>().productsCatalog.keys.map((e) {
+                return ShoppingListItem(productId: e);
               }).toList()
-            : []);
+            : [LinearProgressIndicator()]);
   }
 
   @override

@@ -33,7 +33,7 @@ class _WatchlistCardState extends State<WatchlistCard>
   @override
   Widget build(BuildContext context)
   {
-    int _watchlistCount = Provider.of<Watchlist>(context).watchlistMap.length;
+    int _watchlistCount = Provider.of<Watchlist>(context).watchlistList.length;
     return ListTile(
       title: Text('Watchlist'),
       leading: Icon(Icons.favorite, color: Colors.red),

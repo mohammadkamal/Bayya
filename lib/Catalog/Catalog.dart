@@ -1,46 +1,36 @@
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:Bayya/Product/Product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class Catalog extends ChangeNotifier {
-  List<Product> _productsList = new List<Product>();
+  CollectionReference catalogStore =
+      FirebaseFirestore.instance.collection('Catalog');
 
-  UnmodifiableListView<Product> get productsList =>
-      UnmodifiableListView(_productsList);
-
-  Map<int, Product> _productsCatalog = new Map<int, Product>();
-
-  UnmodifiableMapView<int, Product> get productsCatalog =>
-      UnmodifiableMapView(_productsCatalog);
+  Map<String, Product> _productsCatalog = new Map<String, Product>();
+  UnmodifiableMapView<String, Product> get productsCatalog => UnmodifiableMapView(_productsCatalog);
 
   void addProduct(Product product) {
-    _productsList.add(product);
-    _productsCatalog[generateProductID()] = product;
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      // ignore: unused_local_variable
+      var result = await catalogStore.add(product.toJson());
+    });
+
     notifyListeners();
   }
 
-  void removeProduct(Product product) {
-    _productsList.remove(product);
-    notifyListeners();
-  }
-
-  void removeProductInt(int id) {
+  void removeProduct(String id) {
     _productsCatalog.remove(id);
     notifyListeners();
   }
 
-  int generateProductID() {
-    Random random = new Random();
-    int generatedID = random.nextInt(5000);
-
-    if (_productsCatalog.containsKey(generatedID)) {
-      while (_productsCatalog.containsKey(generatedID)) {
-        generatedID = random.nextInt(5000);
-      }
-    }
-
-    return generatedID;
+  Future<void> fetchData() async {
+    QuerySnapshot querySnapshot = await catalogStore.get();
+    var list = querySnapshot.docs;
+    list.forEach((element) {
+      _productsCatalog[element.id] = Product.fromJson(element.data());
+      notifyListeners();
+    });
   }
 }

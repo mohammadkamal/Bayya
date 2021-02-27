@@ -1,28 +1,47 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Product/ProductView.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartItem extends StatefulWidget {
-  ShoppingCartItem({this.product});
-  final Product product;
+  ShoppingCartItem({this.productId});
+  final String productId;
 
   @override
   _ShoppingCartItemState createState() => _ShoppingCartItemState();
 }
 
 class _ShoppingCartItemState extends State<ShoppingCartItem> {
+  String _imgURL = "";
+  Future<void> _getImageURL() async {
+    var result = await FirebaseStorage.instance
+        .ref()
+        .child(Provider.of<Catalog>(context)
+            .productsCatalog[widget.productId]
+            .imageURL)
+        .getDownloadURL();
+
+    if (_imgURL == null || _imgURL.isEmpty) {
+      setState(() {
+        _imgURL = result;
+      });
+    }
+  }
+
   Widget _imageSection() {
+    _getImageURL();
     return Container(
-        child: Image(
-      image: widget.product.image.image,
-      width: 100,
-      height: 100,
-      fit: BoxFit.fill,
-    ));
+        width: 100,
+        height: 100,
+        child: CachedNetworkImage(
+          placeholder: (context, url) => CircularProgressIndicator(),
+          imageUrl: _imgURL,
+        ));
   }
 
   Widget _leftColumn() {
@@ -37,7 +56,7 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
     return Container(
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(
-          widget.product.name,
+          Provider.of<Catalog>(context).productsCatalog[widget.productId].name,
           style: TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
           softWrap: true,
@@ -47,7 +66,12 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
   Widget _priceText() {
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
-      child: Text(widget.product.price.toString() + ' EGP',
+      child: Text(
+          Provider.of<Catalog>(context)
+                  .productsCatalog[widget.productId]
+                  .price
+                  .toString() +
+              ' EGP',
           textAlign: TextAlign.left),
     );
   }
@@ -56,7 +80,7 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
-        widget.product.vendor,
+        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor,
         textAlign: TextAlign.left,
         softWrap: true,
       ),
@@ -67,14 +91,14 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
     return IconButton(
         icon: Icon(Icons.remove_circle_outline),
         onPressed: () {
-          context.read<ShoppingCart>().decrement(widget.product);
+          context.read<ShoppingCart>().decrement(widget.productId);
         });
   }
 
   Widget _quantityText() {
     return Container(
       child: Text(Provider.of<ShoppingCart>(context)
-          .getQuantity(widget.product)
+          .getQuantity(widget.productId)
           .toString()),
     );
   }
@@ -84,7 +108,7 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
         icon: Icon(Icons.add_circle_outline),
         onPressed: () {
           setState(() {
-            context.read<ShoppingCart>().increment(widget.product);
+            context.read<ShoppingCart>().increment(widget.productId);
           });
         });
   }
@@ -118,7 +142,9 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
             Row(
               children: [
                 ShortDescriptionText(
-                    shortDescription: widget.product.shortDescription,
+                    shortDescription: Provider.of<Catalog>(context)
+                        .productsCatalog[widget.productId]
+                        .shortDescription,
                     bottomPadding: 4)
               ],
             ),
@@ -139,7 +165,7 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ProductView(product: widget.product)))
+                          ProductView(productId: widget.productId)))
               .then((value) => setState(() {}));
         },
         child: Container(

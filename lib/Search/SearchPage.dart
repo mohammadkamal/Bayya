@@ -1,5 +1,4 @@
 import 'package:Bayya/Catalog/Catalog.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Search/ProductSearchResults.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   bool typing = true;
   final textController = TextEditingController();
-  List<Product> _list = new List<Product>();
+  List<String> _listStr = new List<String>();
 
   @override
   void dispose() {
@@ -46,14 +45,15 @@ class _SearchPageState extends State<SearchPage> {
             onPressed: () {
               setState(() {
                 typing = !typing;
-                if (_list.isNotEmpty) {
-                  _list.clear();
+                if(_listStr.isNotEmpty)
+                {
+                  _listStr.clear();
                 }
-                context.read<Catalog>().productsList.forEach((element) {
-                  if (element.name
+                context.read<Catalog>().productsCatalog.forEach((key, value) {
+                  if (value.name
                       .toLowerCase()
                       .contains(this.textController.text.toLowerCase())) {
-                    _list.add(element);
+                    _listStr.add(key);
                   }
                 });
               });
@@ -61,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ],
       ),
-      body: ProductSearchResults(matchResults: _list),
+      body: ProductSearchResults(matchResults: _listStr),
     );
   }
 }

@@ -1,29 +1,49 @@
 import 'dart:ui';
 import 'package:Bayya/Cart/ShoppingCart.dart';
+import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Product/ProductView.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingListItem extends StatefulWidget {
-  final Product product;
-  ShoppingListItem({this.product});
+  final String productId;
+  ShoppingListItem({this.productId});
 
   @override
   _ShoppingListItemState createState() => _ShoppingListItemState();
 }
 
 class _ShoppingListItemState extends State<ShoppingListItem> {
+  String _imgURL = "";
+  Future<void> _getImageURL() async {
+    var result = await FirebaseStorage.instance
+        .ref()
+        .child(Provider.of<Catalog>(context)
+            .productsCatalog[widget.productId]
+            .imageURL)
+        .getDownloadURL();
+
+    if (_imgURL == null || _imgURL.isEmpty) {
+      setState(() {
+        _imgURL = result;
+      });
+    }
+  }
+
   Widget _imageSection() {
+    _getImageURL();
     return Container(
-        child: Image(
-      image: widget.product.image.image,
       width: 100,
       height: 100,
-      fit: BoxFit.fill,
-    ));
+      child: CachedNetworkImage(
+        placeholder: (context, url) => CircularProgressIndicator(),
+        imageUrl: _imgURL,
+      ),
+    );
   }
 
   Widget _leftColumn() {
@@ -38,7 +58,7 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     return Container(
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(
-          widget.product.name,
+          Provider.of<Catalog>(context).productsCatalog[widget.productId].name,
           style: TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
           softWrap: true,
@@ -48,7 +68,12 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   Widget _priceText() {
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
-      child: Text(widget.product.price.toString() + ' EGP',
+      child: Text(
+          Provider.of<Catalog>(context)
+                  .productsCatalog[widget.productId]
+                  .price
+                  .toString() +
+              ' EGP',
           textAlign: TextAlign.left),
     );
   }
@@ -57,7 +82,7 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
-        widget.product.vendor,
+        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor,
         textAlign: TextAlign.left,
         softWrap: true,
       ),
@@ -67,11 +92,13 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   Widget _buttonToCart() {
     return GestureDetector(
         onTap: () {
-          context.read<ShoppingCart>().isInShoppingCart(widget.product)
+          context.read<ShoppingCart>().isInShoppingCart(widget.productId)
               ? context
                   .read<ShoppingCart>()
-                  .removeFromShoppingCart(widget.product)
-              : context.read<ShoppingCart>().addToShoppingCart(widget.product);
+                  .removeFromShoppingCart(widget.productId)
+              : context
+                  .read<ShoppingCart>()
+                  .addToShoppingCart(widget.productId);
           Scaffold.of(context).showSnackBar(_snackBarCart());
         },
         child: Container(
@@ -84,13 +111,13 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
             children: [
               Icon(
                   Provider.of<ShoppingCart>(context)
-                          .isInShoppingCart(widget.product)
+                          .isInShoppingCart(widget.productId)
                       ? Icons.shopping_cart
                       : Icons.add_shopping_cart,
                   color: Colors.white),
               Text(
                 Provider.of<ShoppingCart>(context)
-                        .isInShoppingCart(widget.product)
+                        .isInShoppingCart(widget.productId)
                     ? 'In cart'
                     : 'Add to cart',
                 style: TextStyle(color: Colors.white),
@@ -102,14 +129,14 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
 
   Widget _buttonToWatchlist() {
     Icon iconWatchlist =
-        Provider.of<Watchlist>(context).getWatchlisted(widget.product)
+        Provider.of<Watchlist>(context).getWatchlisted(widget.productId)
             ? Icon(Icons.favorite, color: Colors.red)
             : Icon(Icons.favorite_border_outlined);
     return GestureDetector(
         onTap: () {
-          context.read<Watchlist>().getWatchlisted(widget.product)
-              ? context.read<Watchlist>().unWatchlist(widget.product)
-              : context.read<Watchlist>().setWatchlisted(widget.product);
+          context.read<Watchlist>().getWatchlisted(widget.productId)
+              ? context.read<Watchlist>().unWatchlist(widget.productId)
+              : context.read<Watchlist>().setWatchlisted(widget.productId);
         },
         child: Container(
           padding: const EdgeInsets.all(4),
@@ -148,7 +175,9 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
               children: [
                 ShortDescriptionText(
                     bottomPadding: 4,
-                    shortDescription: widget.product.shortDescription)
+                    shortDescription: Provider.of<Catalog>(context)
+                        .productsCatalog[widget.productId]
+                        .shortDescription)
               ],
             ),
             Row(children: [_priceText()]),
@@ -167,7 +196,8 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProductView(product: widget.product)));
+                builder: (context) =>
+                    ProductView(productId: widget.productId)));
       },
       child: Container(
           margin: const EdgeInsets.all(2),
@@ -182,18 +212,21 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
 
   SnackBar _snackBarCart() {
     return SnackBar(
-      content: Text(widget.product.name +
-          (context.read<ShoppingCart>().isInShoppingCart(widget.product)
-              ? ' was added to shopping cart'
-              : ' was removed from shopping cart')),
+      content: Text(
+          Provider.of<Catalog>(context).productsCatalog[widget.productId].name +
+              (context.read<ShoppingCart>().isInShoppingCart(widget.productId)
+                  ? ' was added to shopping cart'
+                  : ' was removed from shopping cart')),
       action: SnackBarAction(
         label: 'Undo',
         onPressed: () {
-          context.read<ShoppingCart>().isInShoppingCart(widget.product)
+          context.read<ShoppingCart>().isInShoppingCart(widget.productId)
               ? context
                   .read<ShoppingCart>()
-                  .removeFromShoppingCart(widget.product)
-              : context.read<ShoppingCart>().addToShoppingCart(widget.product);
+                  .removeFromShoppingCart(widget.productId)
+              : context
+                  .read<ShoppingCart>()
+                  .addToShoppingCart(widget.productId);
         },
       ),
     );

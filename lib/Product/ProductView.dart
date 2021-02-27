@@ -1,29 +1,54 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
+import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductView extends StatefulWidget {
-  ProductView({this.product});
-  final Product product;
+  ProductView({this.productId});
+  final String productId;
 
   @override
   _ProductViewState createState() => _ProductViewState();
 }
 
 class _ProductViewState extends State<ProductView> {
+  String _imgURL = "";
+  Future<void> _getImageURL() async {
+    var result = await FirebaseStorage.instance
+        .ref()
+        .child(Provider.of<Catalog>(context)
+            .productsCatalog[widget.productId]
+            .imageURL)
+        .getDownloadURL();
+
+    if (_imgURL == null || _imgURL.isEmpty) {
+      setState(() {
+        _imgURL = result;
+      });
+    }
+  }
+
   Widget _imageCard() {
-    return Container(color: Colors.white, child: widget.product.image);
+    _getImageURL();
+    return Container(
+        color: Colors.white,
+        child: CachedNetworkImage(
+          placeholder: (context, url) => LinearProgressIndicator(),
+          imageUrl: _imgURL,
+        ));
   }
 
   Widget _titleText() {
     return Container(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(widget.product.name,
+      child: Text(
+          Provider.of<Catalog>(context).productsCatalog[widget.productId].name,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           softWrap: true),
     );
@@ -32,8 +57,14 @@ class _ProductViewState extends State<ProductView> {
   Widget _priceText() {
     return Container(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(widget.product.price.toString() + ' EGP',
-          style: TextStyle(fontWeight: FontWeight.bold), softWrap: true),
+      child: Text(
+          Provider.of<Catalog>(context)
+                  .productsCatalog[widget.productId]
+                  .price
+                  .toString() +
+              ' EGP',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          softWrap: true),
     );
   }
 
@@ -49,7 +80,9 @@ class _ProductViewState extends State<ProductView> {
           ),
           Row(children: [
             ShortDescriptionText(
-                shortDescription: widget.product.shortDescription,
+                shortDescription: Provider.of<Catalog>(context)
+                    .productsCatalog[widget.productId]
+                    .shortDescription,
                 bottomPadding: 8),
           ]),
           Row(
@@ -77,7 +110,9 @@ class _ProductViewState extends State<ProductView> {
           Row(
             children: [
               Text(
-                widget.product.longDescription,
+                Provider.of<Catalog>(context)
+                    .productsCatalog[widget.productId]
+                    .longDescription,
                 softWrap: true,
               )
             ],
@@ -96,7 +131,7 @@ class _ProductViewState extends State<ProductView> {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: Provider.of<ShoppingCart>(context)
-                    .isInShoppingCart(widget.product)
+                    .isInShoppingCart(widget.productId)
                 ? Colors.red[400]
                 : Colors.lightGreen[500],
             borderRadius: BorderRadius.circular(8)),
@@ -104,7 +139,7 @@ class _ProductViewState extends State<ProductView> {
         height: 50,
         child: Center(
             child: Text(
-          Provider.of<ShoppingCart>(context).isInShoppingCart(widget.product)
+          Provider.of<ShoppingCart>(context).isInShoppingCart(widget.productId)
               ? 'Remove from cart'
               : 'Add to cart',
           style: TextStyle(color: Colors.white, fontSize: 20),
@@ -126,7 +161,11 @@ class _ProductViewState extends State<ProductView> {
             children: [Text('Vendor:')],
           ),
           Row(
-            children: [Text(widget.product.vendor)],
+            children: [
+              Text(Provider.of<Catalog>(context)
+                  .productsCatalog[widget.productId]
+                  .vendor)
+            ],
           )
         ],
       ),
@@ -135,39 +174,41 @@ class _ProductViewState extends State<ProductView> {
 
   Widget _upperIconWatchlist() {
     return IconButton(
-        icon: Provider.of<Watchlist>(context).getWatchlisted(widget.product)
+        icon: Provider.of<Watchlist>(context).getWatchlisted(widget.productId)
             ? Icon(Icons.favorite, color: Colors.red)
             : Icon(Icons.favorite_border),
         onPressed: () {
-          context.read<Watchlist>().getWatchlisted(widget.product)
-              ? context.read<Watchlist>().unWatchlist(widget.product)
-              : context.read<Watchlist>().setWatchlisted(widget.product);
+          context.read<Watchlist>().getWatchlisted(widget.productId)
+              ? context.read<Watchlist>().unWatchlist(widget.productId)
+              : context.read<Watchlist>().setWatchlisted(widget.productId);
         });
   }
 
   Widget _floatingAddToCart() {
     return FloatingActionButton(
         tooltip: 'Add to cart',
-        child:
-            Provider.of<ShoppingCart>(context).isInShoppingCart(widget.product)
-                ? Icon(Icons.remove_shopping_cart)
-                : Icon(Icons.add_shopping_cart),
+        child: Provider.of<ShoppingCart>(context)
+                .isInShoppingCart(widget.productId)
+            ? Icon(Icons.remove_shopping_cart)
+            : Icon(Icons.add_shopping_cart),
         onPressed: () {
           _onAddToCartTap();
         });
   }
 
   void _onAddToCartTap() {
-    context.read<ShoppingCart>().isInShoppingCart(widget.product)
-        ? context.read<ShoppingCart>().removeFromShoppingCart(widget.product)
-        : context.read<ShoppingCart>().addToShoppingCart(widget.product);
+    context.read<ShoppingCart>().isInShoppingCart(widget.productId)
+        ? context.read<ShoppingCart>().removeFromShoppingCart(widget.productId)
+        : context.read<ShoppingCart>().addToShoppingCart(widget.productId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.product.name),
+          title: Text(Provider.of<Catalog>(context)
+              .productsCatalog[widget.productId]
+              .name),
           actions: <Widget>[_upperIconWatchlist(), ShoppingCartUpperIcon()],
         ),
         body: Container(

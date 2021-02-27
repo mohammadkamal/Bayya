@@ -1,16 +1,11 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartItem.dart';
-import 'package:Bayya/Product/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Product> _shopList = List();
-    Provider.of<ShoppingCart>(context)
-        .shoppingCartMap
-        .forEach((key, value) => _shopList.add(value));
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping Cart'),
@@ -19,13 +14,16 @@ class ShoppingCartList extends StatelessWidget {
           color: Colors.grey,
           child: ListView(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              children: _shopList.isNotEmpty
-                  ? _shopList.map((Product product) {
-                      return ShoppingCartItem(
-                        product: product,
-                      );
-                    }).toList()
-                  : [])),
+              children:
+                  context.read<ShoppingCart>().shoppingItemQuantites.isNotEmpty
+                      ? context
+                          .read<ShoppingCart>()
+                          .shoppingItemQuantites
+                          .keys
+                          .map((e) {
+                          return ShoppingCartItem(productId: e);
+                        }).toList()
+                      : [])),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: null,
           label: Text(

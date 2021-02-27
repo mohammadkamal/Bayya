@@ -1,48 +1,89 @@
-import 'package:flutter/cupertino.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum ProductCategory { clothes, elctronics, food }
 
+@JsonSerializable()
 class Product {
   //Constructor
   Product(
-      {this.id,
-      this.name,
+      {this.name,
       this.shortDescription,
       this.longDescription,
       this.vendor,
       this.price,
       this.category,
-      this.image});
+      this.imageURL,
+      this.ratings});
 
   //Fields & Variables
-  String name, shortDescription, longDescription, vendor;
+  String name, shortDescription, longDescription, vendor, imageURL;
   double price, ratings;
-  int id, quantity;
-  Image image;
+  int quantity;
   ProductCategory category;
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'shortDescription': shortDescription,
-        'longDescription': longDescription,
-        'vendor': vendor,
-        'price': price,
-        'category': category,
-        'image': image,
-        'ratings': ratings
-      };
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 
-  Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    shortDescription = json['shortDescription'];
-    longDescription = json['longDescription'];
-    vendor = json['vendor'];
-    price = json['price'];
-    category = json['category'];
-    image = json['image'];
-    ratings = json['ratings'];
+  String productCategoryToString() {
+    String temp = "";
+    switch (category) {
+      case ProductCategory.clothes:
+        temp = "Clothes";
+        break;
+      case ProductCategory.elctronics:
+        temp = "Elctronics";
+        break;
+      case ProductCategory.food:
+        temp = "Food";
+        break;
+      default:
+        temp = "None";
+        break;
+    }
+    return temp;
   }
 }
+
+ProductCategory productCategoryFromString(String str) {
+  ProductCategory temp;
+  switch (str) {
+    case "Clothes":
+      temp = ProductCategory.clothes;
+      break;
+    case "Elctronics":
+      temp = ProductCategory.elctronics;
+      break;
+    case "Food":
+      temp = ProductCategory.food;
+      break;
+    default:
+      break;
+  }
+  return temp;
+}
+
+Product _$ProductFromJson(Map<String, dynamic> json) {
+  return Product(
+    name: json['name'],
+    shortDescription: json['shortDescription'],
+    longDescription: json['longDescription'],
+    vendor: json['vendor'],
+    price: json['price'],
+    category: productCategoryFromString(json['category']),
+    imageURL: json['imageURL'],
+    ratings: json['ratings'],
+  );
+}
+
+Map<String, dynamic> _$ProductToJson(Product product) => <String, dynamic>{
+      'name': product.name,
+      'shortDescription': product.shortDescription,
+      'longDescription': product.longDescription,
+      'vendor': product.vendor,
+      'price': product.price,
+      'category': product.productCategoryToString(),
+      'imageURL': product.imageURL,
+      'ratings': product.ratings
+    };

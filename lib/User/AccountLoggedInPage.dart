@@ -1,6 +1,6 @@
 import 'package:Bayya/User/EditProfile.dart';
 import 'package:Bayya/User/UserInformationTopCard.dart';
-import 'package:Bayya/User/VendorAccount.dart';
+//import 'package:Bayya/User/VendorAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +52,7 @@ class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
         children: [
           UserInformationTopCard(),
           _accountSettings(),
-          VendorAccount(FirebaseAuth.instance.currentUser.email,FirebaseAuth.instance.currentUser.displayName),
+          /*VendorAccount(FirebaseAuth.instance.currentUser.email,FirebaseAuth.instance.currentUser.displayName),*/
           _signOut()
         ],
       ),

@@ -3,14 +3,12 @@ import 'package:Bayya/Cart/ShoppingCartList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ShoppingCartCard extends StatefulWidget
-{
+class ShoppingCartCard extends StatefulWidget {
   @override
   _ShoppingCartCardState createState() => _ShoppingCartCardState();
 }
 
-class _ShoppingCartCardState extends State<ShoppingCartCard>
-{
+class _ShoppingCartCardState extends State<ShoppingCartCard> {
   Route _createRouteToShoppingCart() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -31,9 +29,9 @@ class _ShoppingCartCardState extends State<ShoppingCartCard>
   }
 
   @override
-  Widget build(BuildContext context)
-  {
-    int cartCount = Provider.of<ShoppingCart>(context).shoppingCartMap.length;
+  Widget build(BuildContext context) {
+    int cartCount =
+        Provider.of<ShoppingCart>(context).shoppingItemQuantites.keys.length;
     return ListTile(
         title: Text('Shopping Cart'),
         leading: Icon(Icons.shopping_cart, color: Colors.lightGreen),

@@ -1,46 +1,67 @@
 import 'dart:collection';
 
-import 'package:Bayya/Product/Product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class ShoppingCart extends ChangeNotifier {
-  final Map<int, Product> _shoppingCartMap = new Map<int, Product>();
-  final Map<int, int> _shoppingItemQuantites = new Map<int, int>(); //Product id & quantity
+  final Map<String, int> _shoppingItemQuantites = new Map<String, int>();
 
-  UnmodifiableMapView<int, Product> get shoppingCartMap =>
-      UnmodifiableMapView(_shoppingCartMap);
-  UnmodifiableMapView<int, int> get shoppingItemQuantites =>
+  UnmodifiableMapView<String, int> get shoppingItemQuantites =>
       UnmodifiableMapView(_shoppingItemQuantites);
 
-  void addToShoppingCart(Product product) {
-    _shoppingCartMap[product.id] = product;
-    _shoppingItemQuantites[product.id] = 1;
+  CollectionReference shoppingCartRemote =
+      FirebaseFirestore.instance.collection('ShoppingCart');
+
+  void addToShoppingCart(String key) {
+    _shoppingItemQuantites[key] = 1;
+    update();
     notifyListeners();
   }
 
-  void removeFromShoppingCart(Product product) {
-    _shoppingCartMap.remove(product.id);
-    _shoppingItemQuantites.remove(product.id);
+  void removeFromShoppingCart(String key) {
+    _shoppingItemQuantites.remove(key);
+    update();
     notifyListeners();
   }
 
-  bool isInShoppingCart(Product product) {
-    return _shoppingCartMap.containsKey(product.id);
+  bool isInShoppingCart(String key) {
+    return _shoppingItemQuantites.containsKey(key);
   }
 
-  void increment(Product product) {
-    _shoppingItemQuantites[product.id]++;
+  void increment(String key) {
+    _shoppingItemQuantites[key]++;
+    update();
     notifyListeners();
   }
 
-  void decrement(Product product) {
-    _shoppingItemQuantites[product.id] >= 1
-        ? _shoppingItemQuantites[product.id]--
-        : _shoppingItemQuantites[product.id] = 1;
+  void decrement(String key) {
+    if (_shoppingItemQuantites[key] >= 1) {
+      _shoppingItemQuantites[key]--;
+    } else {
+      _shoppingItemQuantites[key] = 1;
+    }
+    update();
     notifyListeners();
   }
 
-  int getQuantity(Product product) {
-    return _shoppingItemQuantites[product.id];
+  int getQuantity(String key) {
+    return _shoppingItemQuantites[key];
+  }
+
+  void update() {
+    shoppingCartRemote
+        .doc(FirebaseAuth.instance.currentUser.email)
+        .set(_shoppingItemQuantites);
+  }
+
+  Future<void> fetchData() async {
+    DocumentSnapshot documentSnapshot = await shoppingCartRemote
+        .doc(FirebaseAuth.instance.currentUser.email)
+        .get();
+    documentSnapshot.data().forEach((key, value) {
+      _shoppingItemQuantites[key] = value;
+      notifyListeners();
+    });
   }
 }

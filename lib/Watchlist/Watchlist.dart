@@ -7,41 +7,37 @@ class Watchlist extends ChangeNotifier {
   CollectionReference watchlist =
       FirebaseFirestore.instance.collection('watchlist');
 
-  List<String> _watchlistList = new List<String>();
-  UnmodifiableListView<String> get watchlistList =>
-      UnmodifiableListView(_watchlistList);
+  Map<String, bool> _watchlistMap = new Map<String, bool>();
+  UnmodifiableMapView<String, bool> get watchlistMap =>
+      UnmodifiableMapView(_watchlistMap);
 
   void setWatchlisted(String key) {
-    _watchlistList.add(key);
+    _watchlistMap[key] = true;
     update();
     notifyListeners();
   }
 
   void unWatchlist(String key) {
-    _watchlistList.remove(key);
+    _watchlistMap.remove(key);
     update();
     notifyListeners();
   }
 
   bool getWatchlisted(String key) {
-    return _watchlistList.contains(key);
+    return _watchlistMap.containsKey(key);
   }
 
   void update() {
-    watchlist
-        .doc(FirebaseAuth.instance.currentUser.email)
-        .set({"watchArr": _watchlistList});
+    watchlist.doc(FirebaseAuth.instance.currentUser.email).set(_watchlistMap);
   }
 
   Future<void> fetchData() async {
-    await watchlist
+    DocumentSnapshot documentSnapshot = await watchlist
         .doc(FirebaseAuth.instance.currentUser.email)
-        .get()
-        .then((value) {
-      List.from(value.data()["watchArr"]).forEach((element) {
-        _watchlistList.add(element);
-      });
+        .get();
+    documentSnapshot.data().forEach((key, value) {
+      _watchlistMap[key] = value;
+      notifyListeners();
     });
-    notifyListeners();
   }
 }

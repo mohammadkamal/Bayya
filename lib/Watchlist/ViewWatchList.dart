@@ -16,10 +16,11 @@ class ViewWatchList extends StatelessWidget {
           color: Colors.grey,
           child: ListView(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              children: Provider.of<Watchlist>(context).watchlistList.isNotEmpty
+              children: Provider.of<Watchlist>(context).watchlistMap.isNotEmpty
                   ? Provider.of<Watchlist>(context)
-                      .watchlistList
-                      .map((String productId) {
+                      .watchlistMap
+                      .keys
+                      .map((productId) {
                       return WatchlistItem(
                         productId: productId,
                       );

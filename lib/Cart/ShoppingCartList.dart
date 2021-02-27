@@ -14,16 +14,16 @@ class ShoppingCartList extends StatelessWidget {
           color: Colors.grey,
           child: ListView(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              children:
-                  context.read<ShoppingCart>().shoppingItemQuantites.isNotEmpty
-                      ? context
-                          .read<ShoppingCart>()
-                          .shoppingItemQuantites
-                          .keys
-                          .map((e) {
-                          return ShoppingCartItem(productId: e);
-                        }).toList()
-                      : [])),
+              children: Provider.of<ShoppingCart>(context)
+                      .shoppingItemQuantites
+                      .isNotEmpty
+                  ? Provider.of<ShoppingCart>(context)
+                      .shoppingItemQuantites
+                      .keys
+                      .map((e) {
+                      return ShoppingCartItem(productId: e);
+                    }).toList()
+                  : [])),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: null,
           label: Text(

@@ -81,7 +81,7 @@ class _WatchlistItemState extends State<WatchlistItem> {
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
           Provider.of<Catalog>(context)
-                  .productsCatalog[widget.productId]
+                  .productsCatalog[widget.productId].price
                   .toString() +
               ' EGP',
           textAlign: TextAlign.left),

@@ -24,8 +24,8 @@ class _ShoppingListState extends State<ShoppingList> {
   Widget _productsList() {
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 8.0),
-        children: context.read<Catalog>().productsCatalog.isNotEmpty
-            ? context.read<Catalog>().productsCatalog.keys.map((e) {
+        children: Provider.of<Catalog>(context).productsCatalog.isNotEmpty
+            ? Provider.of<Catalog>(context).productsCatalog.keys.map((e) {
                 return ShoppingListItem(productId: e);
               }).toList()
             : [LinearProgressIndicator()]);

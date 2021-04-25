@@ -1,28 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class VendorAccount extends StatelessWidget {
-  final String email;
-  final String displayName;
+@JsonSerializable()
+class VendorAccount
+{
+  VendorAccount({this.email,this.displayName});
+  String email, displayName;
+  factory VendorAccount.fromJson(Map<String, dynamic> json) =>
+      _$VendorAccountFromJson(json);
 
-  VendorAccount(this.email, this.displayName);
-
-  @override
-  Widget build(BuildContext context) {
-    CollectionReference vendors =
-        FirebaseFirestore.instance.collection('vendors');
-
-    Future<void> addVendor() {
-      return vendors
-          .add({'email': email, 'displayName': displayName})
-          .then((value) => print("Vendor Added"))
-          .catchError((error) => print("Failed to add vendor: $error"));
-    }
-
-    return ListTile(
-      onTap: addVendor,
-      leading: Icon(Icons.store),
-      title: Text("Turn into vendor account"),
-    );
-  }
+  Map<String, dynamic> toJson() => _$VendorAccountToJson(this);
 }
+
+VendorAccount _$VendorAccountFromJson(Map<String, dynamic> json) {
+  return VendorAccount(
+    email: json['email'],
+    displayName: json['displayName']
+  );
+}
+
+Map<String, dynamic> _$VendorAccountToJson(VendorAccount vendorAccount) => <String, dynamic>{
+      'email': vendorAccount.email,
+      'displayName': vendorAccount.displayName,
+    };

@@ -1,4 +1,5 @@
 import 'package:Bayya/User/UserInfoLabelForm.dart';
+import 'package:Bayya/User/UserLogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,9 @@ class _UserRegisterState extends State<UserRegister> {
       padding: const EdgeInsets.only(right: 10, left: 10),
       child: TextFormField(
         controller: emailCtrl,
-        decoration: InputDecoration(labelText: 'Enter your e-mail'),
+        decoration: InputDecoration(
+            labelText: 'Enter your e-mail',
+            border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
         validator: (value) {
           if (value.isEmpty) {
             return 'This field is required';
@@ -37,7 +40,9 @@ class _UserRegisterState extends State<UserRegister> {
         padding: const EdgeInsets.only(right: 10, left: 10),
         child: TextFormField(
           controller: passCtrl,
-          decoration: InputDecoration(labelText: 'Enter your password'),
+          decoration: InputDecoration(
+              labelText: 'Enter your password',
+              border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
           obscureText: true,
           validator: (value) {
             if (value.isEmpty) {
@@ -46,6 +51,13 @@ class _UserRegisterState extends State<UserRegister> {
             return null;
           },
         ));
+  }
+
+  Widget _haveAccount() {
+    return TextButton(
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserLogin())),
+        child: Text('Already hava an account?'));
   }
 
   Widget _submitButton() {
@@ -112,6 +124,7 @@ class _UserRegisterState extends State<UserRegister> {
                 _email(),
                 UserInfoLabelForm(text: 'Password'),
                 _password(),
+                _haveAccount(),
                 _submitButton(),
               ],
             ),

@@ -1,9 +1,12 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
 import 'package:Bayya/Catalog/Catalog.dart';
-import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
+import 'package:Bayya/User/VendorsList.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:Bayya/WidgetUtils/ShortDescriptionText.dart';
+import 'package:Bayya/WidgetUtils/SignInToPerfomAction.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,8 @@ class ProductView extends StatefulWidget {
 
 class _ProductViewState extends State<ProductView> {
   String _imgURL = "";
+  String _vendor = 'Vendor not provided';
+
   Future<void> _getImageURL() async {
     var result = await FirebaseStorage.instance
         .ref()
@@ -150,6 +155,7 @@ class _ProductViewState extends State<ProductView> {
   }
 
   Widget _vendorCard() {
+    _getVendorName();
     return Container(
       padding: const EdgeInsets.all(4),
       margin: const EdgeInsets.only(bottom: 2),
@@ -161,15 +167,17 @@ class _ProductViewState extends State<ProductView> {
             children: [Text('Vendor:')],
           ),
           Row(
-            children: [
-              Text(Provider.of<Catalog>(context)
-                  .productsCatalog[widget.productId]
-                  .vendor)
-            ],
+            children: [Text(_vendor)],
           )
         ],
       ),
     );
+  }
+
+  Future<void> _getVendorName() async {
+    var _result = await Provider.of<VendorsList>(context).getVendorNameByUid(
+        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor);
+    _vendor = _result;
   }
 
   Widget _upperIconWatchlist() {
@@ -178,9 +186,14 @@ class _ProductViewState extends State<ProductView> {
             ? Icon(Icons.favorite, color: Colors.red)
             : Icon(Icons.favorite_border),
         onPressed: () {
-          context.read<Watchlist>().getWatchlisted(widget.productId)
-              ? context.read<Watchlist>().unWatchlist(widget.productId)
-              : context.read<Watchlist>().setWatchlisted(widget.productId);
+          if (FirebaseAuth.instance.currentUser != null) {
+            context.read<Watchlist>().getWatchlisted(widget.productId)
+                ? context.read<Watchlist>().unWatchlist(widget.productId)
+                : context.read<Watchlist>().setWatchlisted(widget.productId);
+          } else {
+            showDialog(
+                context: context, builder: (context) => SignInToPerfomAction());
+          }
         });
   }
 
@@ -197,9 +210,16 @@ class _ProductViewState extends State<ProductView> {
   }
 
   void _onAddToCartTap() {
-    context.read<ShoppingCart>().isInShoppingCart(widget.productId)
-        ? context.read<ShoppingCart>().removeFromShoppingCart(widget.productId)
-        : context.read<ShoppingCart>().addToShoppingCart(widget.productId);
+    if (FirebaseAuth.instance.currentUser != null) {
+      context.read<ShoppingCart>().isInShoppingCart(widget.productId)
+          ? context
+              .read<ShoppingCart>()
+              .removeFromShoppingCart(widget.productId)
+          : context.read<ShoppingCart>().addToShoppingCart(widget.productId);
+    } else {
+      showDialog(
+          context: context, builder: (context) => SignInToPerfomAction());
+    }
   }
 
   @override

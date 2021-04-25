@@ -1,6 +1,7 @@
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/Product/ProductView.dart';
+import 'package:Bayya/User/VendorsList.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,6 +18,8 @@ class WatchlistItem extends StatefulWidget {
 
 class _WatchlistItemState extends State<WatchlistItem> {
   String _imgURL = "";
+  String _vendor = 'Vendor not provided';
+
   Future<void> _getImageURL() async {
     var result = await FirebaseStorage.instance
         .ref()
@@ -89,14 +92,21 @@ class _WatchlistItemState extends State<WatchlistItem> {
   }
 
   Widget _vendorText() {
+    _getVendorName();
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
-        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor,
+        _vendor,
         textAlign: TextAlign.left,
         softWrap: true,
       ),
     );
+  }
+
+  Future<void> _getVendorName() async {
+    var _result = await Provider.of<VendorsList>(context).getVendorNameByUid(
+        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor);
+    _vendor = _result;
   }
 
   Widget _addToCart() {
@@ -191,7 +201,7 @@ class _WatchlistItemState extends State<WatchlistItem> {
           key: Key(Provider.of<Catalog>(context).productsCatalog[widget.productId].name),
           onDismissed: (direction) {
             context.read<Watchlist>().unWatchlist(widget.productId);
-            Scaffold.of(context).showSnackBar(_unWatchlistSnackBar());
+            ScaffoldMessenger.of(context).showSnackBar(_unWatchlistSnackBar());
           },
           child: Container(
             margin: const EdgeInsets.all(2),

@@ -11,7 +11,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   bool typing = true;
   final textController = TextEditingController();
-  List<String> _listStr = new List<String>();
+  List<String> _listStr = [];
 
   @override
   void dispose() {

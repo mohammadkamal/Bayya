@@ -1,10 +1,13 @@
 import 'dart:ui';
 import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Catalog/Catalog.dart';
-import 'package:Bayya/ItemWidgets/ShortDescriptionText.dart';
 import 'package:Bayya/Product/ProductView.dart';
+import 'package:Bayya/User/VendorsList.dart';
 import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:Bayya/WidgetUtils/ShortDescriptionText.dart';
+import 'package:Bayya/WidgetUtils/SignInToPerfomAction.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +22,8 @@ class ShoppingListItem extends StatefulWidget {
 
 class _ShoppingListItemState extends State<ShoppingListItem> {
   String _imgURL = "";
+  String _vendor = 'Vendor not provided';
+
   Future<void> _getImageURL() async {
     var result = await FirebaseStorage.instance
         .ref()
@@ -79,27 +84,38 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
   }
 
   Widget _vendorText() {
+    _getVendorName();
     return Container(
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
-        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor,
+        _vendor,
         textAlign: TextAlign.left,
         softWrap: true,
       ),
     );
   }
 
+  Future<void> _getVendorName() async {
+    var _result = await Provider.of<VendorsList>(context).getVendorNameByUid(
+        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor);
+    _vendor = _result;
+  }
+
   Widget _buttonToCart() {
     return GestureDetector(
         onTap: () {
-          context.read<ShoppingCart>().isInShoppingCart(widget.productId)
-              ? context
-                  .read<ShoppingCart>()
-                  .removeFromShoppingCart(widget.productId)
-              : context
-                  .read<ShoppingCart>()
-                  .addToShoppingCart(widget.productId);
-          Scaffold.of(context).showSnackBar(_snackBarCart());
+          if (FirebaseAuth.instance.currentUser != null) {
+            context.read<ShoppingCart>().isInShoppingCart(widget.productId)
+                ? context
+                    .read<ShoppingCart>()
+                    .removeFromShoppingCart(widget.productId)
+                : context
+                    .read<ShoppingCart>()
+                    .addToShoppingCart(widget.productId);
+            ScaffoldMessenger.of(context).showSnackBar(_snackBarCart());
+          } else {
+            showDialog(context: context, builder: (context) => SignInToPerfomAction());
+          }
         },
         child: Container(
           width: 120,
@@ -134,9 +150,13 @@ class _ShoppingListItemState extends State<ShoppingListItem> {
             : Icon(Icons.favorite_border_outlined);
     return GestureDetector(
         onTap: () {
-          context.read<Watchlist>().getWatchlisted(widget.productId)
-              ? context.read<Watchlist>().unWatchlist(widget.productId)
-              : context.read<Watchlist>().setWatchlisted(widget.productId);
+          if (FirebaseAuth.instance.currentUser != null) {
+            context.read<Watchlist>().getWatchlisted(widget.productId)
+                ? context.read<Watchlist>().unWatchlist(widget.productId)
+                : context.read<Watchlist>().setWatchlisted(widget.productId);
+          } else {
+            showDialog(context: context, builder: (context) => SignInToPerfomAction());
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(4),

@@ -1,8 +1,10 @@
+import 'package:Bayya/Cart/ShoppingCart.dart';
 import 'package:Bayya/Cart/ShoppingCartUpperIcon.dart';
 import 'package:Bayya/Catalog/Catalog.dart';
 import 'package:Bayya/Catalog/ShoppingListItem.dart';
 import 'package:Bayya/Search/SearchPage.dart';
 import 'package:Bayya/SideDrawer/SideBar.dart';
+import 'package:Bayya/Watchlist/Watchlist.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,15 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
+
+  void initState()
+  {
+    super.initState();
+    context.read<Catalog>().fetchData();
+    context.read<ShoppingCart>().fetchData();
+    context.read<Watchlist>().fetchData();
+  }
+
   Widget _upperSearchIcon(BuildContext context) {
     return IconButton(
         icon: Icon(Icons.search, color: Colors.white),

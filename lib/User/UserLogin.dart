@@ -1,5 +1,6 @@
 import 'package:Bayya/User/ForgetPassword.dart';
 import 'package:Bayya/User/UserInfoLabelForm.dart';
+import 'package:Bayya/User/UserRegister.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _UserLoginState extends State<UserLogin> {
         child: TextFormField(
           controller: emailCtrl,
           decoration: InputDecoration(
-            border: null,
+            border: OutlineInputBorder(borderSide: BorderSide(width: 7)),
             labelText: 'Enter your email',
           ),
           autofocus: true,
@@ -37,7 +38,9 @@ class _UserLoginState extends State<UserLogin> {
         padding: const EdgeInsets.only(right: 10, left: 10),
         child: TextFormField(
           controller: passCtrl,
-          decoration: InputDecoration(labelText: 'Enter your password'),
+          decoration: InputDecoration(
+              labelText: 'Enter your password',
+              border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
           obscureText: true,
           validator: (value) {
             if (value.isEmpty) {
@@ -49,19 +52,19 @@ class _UserLoginState extends State<UserLogin> {
   }
 
   Widget _forgotPassword() {
-    return GestureDetector(
-      child: Container(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Text(
-          'Forgot password?',
-          style: TextStyle(color: Colors.blue),
-        ),
-      ),
-      onTap: () {
-        return showDialog(
-            context: context, builder: (context) => ForgetPassword());
-      },
-    );
+    return TextButton(
+        onPressed: () {
+          return showDialog(
+              context: context, builder: (context) => ForgetPassword());
+        },
+        child: Text('Forgot password?'));
+  }
+
+  Widget _donthaveAccount() {
+    return TextButton(
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserRegister())),
+        child: Text("Don't have an account?"));
   }
 
   Widget _loadingWhenTap() {
@@ -84,8 +87,8 @@ class _UserLoginState extends State<UserLogin> {
                 // ignore: unused_local_variable
                 var result = await _login()
                     .whenComplete(() => Navigator.pop(context))
-                    .then((value) => Navigator
-                      .popUntil(context, ModalRoute.withName('/')));
+                    .then((value) =>
+                        Navigator.popUntil(context, ModalRoute.withName('/')));
               }
             },
             child: Text('Login')));
@@ -126,7 +129,9 @@ class _UserLoginState extends State<UserLogin> {
               _email(),
               UserInfoLabelForm(text: 'Password'),
               _password(),
-              _forgotPassword(),
+              Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [_donthaveAccount(), _forgotPassword()],
+              ),
               _loginButton()
             ],
           )

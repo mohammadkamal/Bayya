@@ -18,7 +18,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget _emailForm() {
     return TextFormField(
       controller: emailCtrl,
-      decoration: InputDecoration(labelText: 'Enter your email'),
+      decoration: InputDecoration(
+          labelText: 'Enter your email',
+          border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
       validator: (value) {
         if (value.isEmpty) {
           return 'This field is required';
@@ -40,7 +42,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 _reset();
               }
             },
-            child: Text('Reset Password')));
+            child: Text('Confirm')));
   }
 
   Future<void> _reset() async {
@@ -50,14 +52,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        content: Container(
-            child: Form(
-      key: _formKeyL,
-      child: Center(
-        child: Column(
-          children: [_mainText(), _emailForm(), _resetButton()],
-        ),
-      ),
-    )));
+        title: Text('Reset password'),
+        content: ListView(shrinkWrap: true, children: [
+          Form(
+            key: _formKeyL,
+            child: Column(
+                children: [_mainText(), _emailForm(), _resetButton()],
+              ),
+            ),
+        ]));
   }
 }

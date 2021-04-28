@@ -1,8 +1,8 @@
-import 'package:Bayya/Cart/ShoppingCart.dart';
-import 'package:Bayya/Catalog/Catalog.dart';
-import 'package:Bayya/Catalog/ShoppingList.dart';
-import 'package:Bayya/User/VendorsList.dart';
-import 'package:Bayya/Watchlist/Watchlist.dart';
+import 'package:bayya/cart/shopping_cart.dart';
+import 'package:bayya/catalog/catalog.dart';
+import 'package:bayya/catalog/shopping_list.dart';
+import 'package:bayya/user/vendors_list.dart';
+import 'package:bayya/watchlist/watchlist.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

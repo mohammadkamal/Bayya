@@ -7,45 +7,25 @@ class CurrentUserHeaderCard extends StatefulWidget {
 }
 
 class _CurrentUserHeaderCardState extends State<CurrentUserHeaderCard> {
-  String userNameLabel = 'Vistor';
+  String _userNameLabel = 'Vistor';
+
+  @override
+  void initState() {
+    super.initState();
+    if (FirebaseAuth.instance.currentUser == null ||
+        FirebaseAuth.instance.currentUser.isAnonymous) {
+      _userNameLabel = 'Visitor';
+    } else {
+      if (FirebaseAuth.instance.currentUser.displayName.isEmpty) {
+        _userNameLabel = 'User Name not specifed';
+      } else {
+        _userNameLabel = FirebaseAuth.instance.currentUser.displayName;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //Known bug at firebase_core0.7.0 --> Upgrade to nullsafety
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null || user.isAnonymous) {
-        userNameLabel = 'Vistor';
-      } else {
-        if (user.displayName.isEmpty) {
-          userNameLabel = 'User Name not specifed';
-        } else {
-          userNameLabel = user.displayName;
-        }
-      }
-    });
-
-    /*FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null) {
-        userNameLabel = 'Vistor';
-      } else {
-        if (user.displayName.isEmpty) {
-          userNameLabel = 'User Name not specifed';
-        } else {
-          userNameLabel = user.displayName;
-        }
-      }
-      setState(() {});
-
-      if (FirebaseAuth.instance.currentUser.displayName == null) {
-      userNameLabel = 'User Name not specifed';
-    } else {
-      if (FirebaseAuth.instance.currentUser.displayName.isEmpty) {
-        userNameLabel = 'User Name not specifed';
-      } else {
-        userNameLabel = FirebaseAuth.instance.currentUser.displayName;
-      }
-    }
-    });*/
     return DrawerHeader(
       child: Row(
         children: [
@@ -62,7 +42,7 @@ class _CurrentUserHeaderCardState extends State<CurrentUserHeaderCard> {
             padding: const EdgeInsets.only(left: 20),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(userNameLabel, softWrap: true)]),
+                children: [Text(_userNameLabel, softWrap: true)]),
           ),
         ],
       ),

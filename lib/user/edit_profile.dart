@@ -1,16 +1,14 @@
-import 'package:bayya/user/vendors_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
+  @override
   _EditProfileState createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
   String _displayName = '';
   TextEditingController _displayNameCtrl;
-  bool _isVendor = false;
   final _scaffoldStateKey = GlobalKey<ScaffoldState>();
 
   void initState() {
@@ -27,18 +25,6 @@ class _EditProfileState extends State<EditProfile> {
       }
     }
     _displayNameCtrl = TextEditingController(text: _displayName);
-    _checkIfVendor();
-  }
-
-  Future<void> _checkIfVendor() async {
-    var _result = await context
-        .read<VendorsList>()
-        .isVendorAccount(FirebaseAuth.instance.currentUser.uid);
-    if (_result == true && _isVendor == false) {
-      setState(() {
-        _isVendor = _result;
-      });
-    }
   }
 
   Widget _displayNameTile() {
@@ -88,11 +74,8 @@ class _EditProfileState extends State<EditProfile> {
     return ElevatedButton(
         onPressed: () async {
           await FirebaseAuth.instance.currentUser
-              .updateProfile(displayName: _displayNameCtrl.text).then((value) => Navigator.pop(context));
-          if (_isVendor) {
-            context.read<VendorsList>().updateDisplayName(
-                FirebaseAuth.instance.currentUser.uid, _displayNameCtrl.text);
-          }
+              .updateDisplayName(_displayNameCtrl.text)
+              .then((value) => Navigator.pop(context));
         },
         child: Text('Update'));
   }
@@ -113,8 +96,10 @@ class _EditProfileState extends State<EditProfile> {
       children: [
         _displayNameLabel(),
         _displayNameTextForm(),
-        _displayNameUpdateButton(),
-        _displayNameCanelButton()
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [_displayNameUpdateButton(), _displayNameCanelButton()],
+        )
       ],
     ));
   }

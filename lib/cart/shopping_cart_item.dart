@@ -1,10 +1,8 @@
 import 'package:bayya/cart/shopping_cart.dart';
-import 'package:bayya/catalog/Catalog.dart';
+import 'package:bayya/catalog/catalog.dart';
 import 'package:bayya/product/product_view.dart';
-import 'package:bayya/user/vendors_list.dart';
-import 'package:bayya/widget_utilities/short_description_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:bayya/widget_utilities/list_item_image.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -18,173 +16,161 @@ class ShoppingCartItem extends StatefulWidget {
 }
 
 class _ShoppingCartItemState extends State<ShoppingCartItem> {
-  String _imgURL = "";
-  String _vendor = 'Vendor not provided';
-
-  Future<void> _getImageURL() async {
-    var result = await FirebaseStorage.instance
-        .ref()
-        .child(Provider.of<Catalog>(context)
-            .productsCatalog[widget.productId]
-            .imageURL)
-        .getDownloadURL();
-
-    if (_imgURL == null || _imgURL.isEmpty) {
-      setState(() {
-        _imgURL = result;
-      });
-    }
-  }
-
-  Widget _imageSection() {
-    _getImageURL();
-    return Container(
-        width: 100,
-        height: 100,
-        child: CachedNetworkImage(
-          placeholder: (context, url) => CircularProgressIndicator(),
-          imageUrl: _imgURL,
-        ));
+  BoxDecoration _itemDecoration() {
+    return BoxDecoration(
+        boxShadow: [
+          BoxShadow(color: Colors.grey, spreadRadius: 0.5, blurRadius: 2)
+        ],
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(width: 1, color: Colors.white),
+        color: Colors.white);
   }
 
   Widget _leftColumn() {
     return Container(
-        padding: EdgeInsets.all(4),
-        child: Column(
-          children: [_imageSection()],
+        margin: EdgeInsets.only(left: 10, right: 10),
+        child: ListItemImage(
+          productId: widget.productId,
         ));
   }
 
   Widget _titleText() {
     return Container(
-        padding: const EdgeInsets.only(bottom: 4),
+        margin: EdgeInsets.only(bottom: 20),
         child: Text(
           Provider.of<Catalog>(context).productsCatalog[widget.productId].name,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           textAlign: TextAlign.left,
           softWrap: true,
         ));
   }
 
+  Widget _centerColumn() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [_titleText(), _priceText()],
+    );
+  }
+
+  Widget _removeButton() {
+    return Container(
+        margin: EdgeInsets.only(bottom: 15),
+        child: IconButton(
+          icon: Icon(
+            Icons.delete,
+            color: Colors.grey[500],
+          ),
+          onPressed: () => context
+              .read<ShoppingCart>()
+              .removeFromShoppingCart(widget.productId),
+        ));
+  }
+
   Widget _priceText() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Text(
-          Provider.of<Catalog>(context)
-                  .productsCatalog[widget.productId]
-                  .price
-                  .toString() +
-              ' EGP',
-          textAlign: TextAlign.left),
-    );
-  }
+    String _priceString = (Provider.of<Catalog>(context)
+                .productsCatalog[widget.productId]
+                .price *
+            Provider.of<ShoppingCart>(context).getQuantity(widget.productId))
+        .toString();
 
-  Widget _vendorText() {
-    _getVendorName();
     return Container(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Text(
-        _vendor,
-        textAlign: TextAlign.left,
-        softWrap: true,
-      ),
-    );
-  }
-
-  Future<void> _getVendorName() async {
-    var _result = await Provider.of<VendorsList>(context).getVendorNameByUid(
-        Provider.of<Catalog>(context).productsCatalog[widget.productId].vendor);
-    _vendor = _result;
+        margin: EdgeInsets.only(top: 20),
+        child: Text(
+          _priceString + ' EGP',
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        ));
   }
 
   Widget _minusButton() {
-    return IconButton(
-        icon: Icon(Icons.remove_circle_outline),
-        onPressed: () {
-          context.read<ShoppingCart>().decrement(widget.productId);
-        });
+    return Container(
+        margin: EdgeInsets.all(3),
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.grey, spreadRadius: 0.5)],
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white),
+        child: IconButton(
+            iconSize: 15,
+            icon: Icon(Icons.remove),
+            onPressed: () =>
+                context.read<ShoppingCart>().decrement(widget.productId)));
   }
 
   Widget _quantityText() {
     return Container(
-      child: Text(Provider.of<ShoppingCart>(context)
-          .getQuantity(widget.productId)
-          .toString()),
+      padding: EdgeInsets.only(left: 5, right: 5),
+      child: Text(
+        Provider.of<ShoppingCart>(context)
+            .getQuantity(widget.productId)
+            .toString(),
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 
   Widget _plusButton() {
-    return IconButton(
-        icon: Icon(Icons.add_circle_outline),
-        onPressed: () {
-          setState(() {
-            context.read<ShoppingCart>().increment(widget.productId);
-          });
-        });
+    return Container(
+        margin: EdgeInsets.all(3),
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.grey, spreadRadius: 0.5)],
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white),
+        child: IconButton(
+            iconSize: 15,
+            icon: Icon(Icons.add),
+            onPressed: () =>
+                context.read<ShoppingCart>().increment(widget.productId)));
   }
 
   Widget _buttonSection() {
     return Container(
-      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.grey[300],
+      ),
       child: Row(
-        children: [
-          Column(children: [_minusButton()]),
-          Column(
-            children: [_quantityText()],
-          ),
-          Column(
-            children: [_plusButton()],
-          )
-        ],
+        children: [_minusButton(), _quantityText(), _plusButton()],
       ),
     );
   }
 
   Widget _rightColumn() {
     return Container(
-        padding: EdgeInsets.all(4),
+        margin: EdgeInsets.only(left: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [_titleText()],
-            ),
-            Row(
-              children: [
-                ShortDescriptionText(
-                    shortDescription: Provider.of<Catalog>(context)
-                        .productsCatalog[widget.productId]
-                        .shortDescription,
-                    bottomPadding: 4)
-              ],
-            ),
-            Row(children: [_priceText()]),
-            Row(
-              children: [_vendorText()],
-            ),
-            _buttonSection(),
-          ],
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [_removeButton(), _buttonSection()],
         ));
+  }
+
+  void _showProductPage() {
+    Navigator.push(
+        context,
+        TweenAnimationRoute().playAnimation(ProductView(
+          productId: widget.productId,
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ProductView(productId: widget.productId)))
-              .then((value) => setState(() {}));
-        },
+        onTap: _showProductPage,
         child: Container(
+          padding: EdgeInsets.all(5),
           margin: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.white),
-              color: Colors.white),
+          decoration: _itemDecoration(),
           child: Row(
-            children: [_leftColumn(), _rightColumn(),],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _leftColumn(),
+              _centerColumn(),
+              _rightColumn(),
+            ],
           ),
         ));
   }

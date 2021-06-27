@@ -32,7 +32,7 @@ class Watchlist extends ChangeNotifier {
   }
 
   Future<void> fetchData() async {
-    DocumentSnapshot documentSnapshot = await watchlist
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await watchlist
         .doc(FirebaseAuth.instance.currentUser.email)
         .get();
     documentSnapshot.data().forEach((key, value) {

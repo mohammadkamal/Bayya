@@ -14,15 +14,12 @@ class _ProductSearchResultsState extends State<ProductSearchResults> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
-      child: ListView(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-        children: widget.matchResults.isNotEmpty
-            ? widget.matchResults.map((String key) {
-                return ShoppingListItem(productId: key);
-              }).toList()
-            : [],
-      ),
-    );
+        child: ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            itemCount: widget.matchResults.length,
+            itemBuilder: (context, index) {
+              return ShoppingListItem(
+                  productId: widget.matchResults.elementAt(index));
+            }));
   }
 }

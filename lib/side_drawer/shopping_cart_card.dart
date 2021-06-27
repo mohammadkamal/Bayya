@@ -1,5 +1,6 @@
 import 'package:bayya/cart/shopping_cart.dart';
 import 'package:bayya/cart/shopping_cart_list.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,25 +10,6 @@ class ShoppingCartCard extends StatefulWidget {
 }
 
 class _ShoppingCartCardState extends State<ShoppingCartCard> {
-  Route _createRouteToShoppingCart() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            ShoppingCartList(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     int cartCount =
@@ -36,7 +18,8 @@ class _ShoppingCartCardState extends State<ShoppingCartCard> {
         title: Text('Shopping Cart'),
         leading: Icon(Icons.shopping_cart, color: Colors.lightGreen),
         onTap: () {
-          Navigator.of(context).push(_createRouteToShoppingCart());
+          Navigator.of(context)
+              .push(TweenAnimationRoute().playAnimation(ShoppingCartList()));
         },
         trailing: cartCount > 0
             ? CircleAvatar(

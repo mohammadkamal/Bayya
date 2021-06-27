@@ -1,5 +1,6 @@
 import 'package:bayya/user/edit_profile.dart';
 import 'package:bayya/user/user_information_top_card.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,13 +12,10 @@ class AccountLoggedInPage extends StatefulWidget {
 class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
   Widget _accountSettings() {
     return ListTile(
-      leading: Icon(Icons.person),
-      title: Text('Edit Profile'),
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EditProfile()));
-      },
-    );
+        leading: Icon(Icons.person),
+        title: Text('Edit Profile'),
+        onTap: () => Navigator.push(
+            context, TweenAnimationRoute().playAnimation(EditProfile())));
   }
 
   Widget _signOut() {
@@ -48,12 +46,7 @@ class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
         title: Text(_pageTitle),
       ),
       body: ListView(
-        children: [
-          UserInformationTopCard(),
-          _accountSettings(),
-          /*VendorAccount(FirebaseAuth.instance.currentUser.email,FirebaseAuth.instance.currentUser.displayName),*/
-          _signOut()
-        ],
+        children: [UserInformationTopCard(), _accountSettings(), _signOut()],
       ),
     );
   }

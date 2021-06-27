@@ -36,7 +36,7 @@ class ShoppingCart extends ChangeNotifier {
   }
 
   void decrement(String key) {
-    if (_shoppingItemQuantites[key] >= 1) {
+    if (_shoppingItemQuantites[key] >= 2) {
       _shoppingItemQuantites[key]--;
     } else {
       _shoppingItemQuantites[key] = 1;
@@ -56,7 +56,7 @@ class ShoppingCart extends ChangeNotifier {
   }
 
   Future<void> fetchData() async {
-    DocumentSnapshot documentSnapshot = await shoppingCartRemote
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await shoppingCartRemote
         .doc(FirebaseAuth.instance.currentUser.email)
         .get();
     documentSnapshot.data().forEach((key, value) {

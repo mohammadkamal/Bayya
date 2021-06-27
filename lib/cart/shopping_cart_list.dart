@@ -1,5 +1,7 @@
 import 'package:bayya/cart/shopping_cart.dart';
 import 'package:bayya/cart/shopping_cart_item.dart';
+import 'package:bayya/catalog/shopping_list.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,31 +11,52 @@ class ShoppingCartList extends StatefulWidget {
 }
 
 class _ShoppingCartListState extends State<ShoppingCartList> {
-  bool _isCartempty = true;
-
   Widget _listOfProducts() {
-    return ListView(
+    return ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 8.0),
-        children:
-            Provider.of<ShoppingCart>(context).shoppingItemQuantites.isNotEmpty
-                ? Provider.of<ShoppingCart>(context)
-                    .shoppingItemQuantites
-                    .keys
-                    .map((e) {
-                    return ShoppingCartItem(productId: e);
-                  }).toList()
-                : []);
+        itemCount: Provider.of<ShoppingCart>(context)
+            .shoppingItemQuantites
+            .keys
+            .length,
+        itemBuilder: (context, index) {
+          return ShoppingCartItem(
+              productId: Provider.of<ShoppingCart>(context)
+                  .shoppingItemQuantites
+                  .keys
+                  .elementAt(index));
+        });
+  }
+
+  Widget _emptyCartContent() {
+    return Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.shopping_cart_outlined,
+              size: 55,
+              color: Colors.blue[300],
+            ),
+            Text('Start shopping now'),
+            OutlinedButton(
+                onPressed: () => Navigator.pushReplacement(context,
+                    TweenAnimationRoute().playAnimation(ShoppingList())),
+                child: Text('Discover products'))
+          ],
+        ));
   }
 
   Widget _proceedButton() {
-    if (!_isCartempty) {
-      return FloatingActionButton.extended(
-          onPressed: null,
-          label: Text(
-            'Proceed to checkout',
-            style: TextStyle(fontSize: 20),
-          ),
-          backgroundColor: Colors.lightGreen[500]);
+    if (Provider.of<ShoppingCart>(context).shoppingItemQuantites.isNotEmpty) {
+      return ElevatedButton(
+        onPressed: null,
+        child: Text('Proceed to checkout',
+            style: TextStyle(fontSize: 20, color: Colors.white)),
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.lightGreen[500])),
+      );
     } else {
       return null;
     }
@@ -41,17 +64,14 @@ class _ShoppingCartListState extends State<ShoppingCartList> {
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<ShoppingCart>(context).shoppingItemQuantites.isEmpty) {
-      _isCartempty = true;
-    } else {
-      _isCartempty = false;
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping Cart'),
       ),
-      body: Container(color: Colors.grey, child: _listOfProducts()),
-      floatingActionButton: _proceedButton()
+      body: Provider.of<ShoppingCart>(context).shoppingItemQuantites.isNotEmpty
+          ? _listOfProducts()
+          : _emptyCartContent(),
+      bottomSheet: _proceedButton(),
     );
   }
 }

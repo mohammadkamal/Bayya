@@ -1,8 +1,8 @@
 import 'package:bayya/user/user_login.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 
-class SignInToPerfomAction extends StatelessWidget
-{
+class SignInToPerfomAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -14,12 +14,11 @@ class SignInToPerfomAction extends StatelessWidget
       actions: [
         TextButton(
             onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserLogin())),
+                context, TweenAnimationRoute().playAnimation(UserLogin())),
             child: Text('Sign in')),
         TextButton(
             onPressed: () => Navigator.pop(context), child: Text('Cancel'))
       ],
     );
   }
-  
 }

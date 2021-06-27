@@ -1,5 +1,6 @@
 import 'package:bayya/user/account_logged_in_page.dart';
 import 'package:bayya/user/account_visitor_page.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,44 +10,6 @@ class AccountCard extends StatefulWidget {
 }
 
 class _AccountCardState extends State<AccountCard> {
-  Route _createRouteToAccountVistor() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            AccountVisitorPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
-  }
-
-  Route _createRouteToLoggedInAccount() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            AccountLoggedInPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.authStateChanges();
@@ -56,9 +19,11 @@ class _AccountCardState extends State<AccountCard> {
         onTap: () {
           if (FirebaseAuth.instance.currentUser == null ||
               FirebaseAuth.instance.currentUser.isAnonymous) {
-            Navigator.of(context).push(_createRouteToAccountVistor());
+            Navigator.of(context).push(
+                TweenAnimationRoute().playAnimation(AccountVisitorPage()));
           } else {
-            Navigator.of(context).push(_createRouteToLoggedInAccount());
+            Navigator.of(context).push(
+                TweenAnimationRoute().playAnimation(AccountLoggedInPage()));
           }
         });
   }

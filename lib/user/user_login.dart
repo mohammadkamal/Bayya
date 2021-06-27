@@ -1,7 +1,9 @@
+import 'package:bayya/catalog/shopping_list.dart';
 import 'package:bayya/user/forget_password.dart';
-import 'package:bayya/user/user_info_label_form.dart';
 import 'package:bayya/user/user_register.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserLogin extends StatefulWidget {
@@ -11,16 +13,17 @@ class UserLogin extends StatefulWidget {
 
 class _UserLoginState extends State<UserLogin> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController passCtrl = TextEditingController();
-  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController _passCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  bool _obscurePasswordText = true;
 
   Widget _email() {
     return Padding(
-        padding: const EdgeInsets.only(right: 10, left: 10),
+        padding: const EdgeInsets.all(10),
         child: TextFormField(
-          controller: emailCtrl,
+          controller: _emailCtrl,
           decoration: InputDecoration(
-            border: OutlineInputBorder(borderSide: BorderSide(width: 7)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
             labelText: 'Enter your email',
           ),
           autofocus: true,
@@ -33,15 +36,27 @@ class _UserLoginState extends State<UserLogin> {
         ));
   }
 
+  Widget _showPassword() {
+    return IconButton(
+        onPressed: () => setState(() {
+              _obscurePasswordText = !_obscurePasswordText;
+            }),
+        icon: _obscurePasswordText
+            ? Icon(CupertinoIcons.eye_slash)
+            : Icon(CupertinoIcons.eye));
+  }
+
   Widget _password() {
     return Padding(
-        padding: const EdgeInsets.only(right: 10, left: 10),
+        padding: const EdgeInsets.all(10),
         child: TextFormField(
-          controller: passCtrl,
+          controller: _passCtrl,
           decoration: InputDecoration(
+              suffixIcon: _showPassword(),
               labelText: 'Enter your password',
-              border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
-          obscureText: true,
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+          obscureText: _obscurePasswordText,
           validator: (value) {
             if (value.isEmpty) {
               return 'This field is required';
@@ -63,7 +78,7 @@ class _UserLoginState extends State<UserLogin> {
   Widget _donthaveAccount() {
     return TextButton(
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserRegister())),
+            context, TweenAnimationRoute().playAnimation(UserRegister())),
         child: Text("Don't have an account?"));
   }
 
@@ -73,8 +88,14 @@ class _UserLoginState extends State<UserLogin> {
 
   Widget _loginButton() {
     return Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(left: 10, right: 10),
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)))),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 showDialog(
@@ -87,8 +108,8 @@ class _UserLoginState extends State<UserLogin> {
                 // ignore: unused_local_variable
                 var result = await _login()
                     .whenComplete(() => Navigator.pop(context))
-                    .then((value) =>
-                        Navigator.popUntil(context, ModalRoute.withName('/')));
+                    .then((value) => Navigator.pushReplacement(context,
+                        TweenAnimationRoute().playAnimation(ShoppingList())));
               }
             },
             child: Text('Login')));
@@ -97,7 +118,7 @@ class _UserLoginState extends State<UserLogin> {
   Future<void> _login() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailCtrl.text, password: passCtrl.text);
+          email: _emailCtrl.text, password: _passCtrl.text);
     } on FirebaseAuthException catch (e) {
       String msg = '';
       if (e.code == 'user-not-found') {
@@ -125,11 +146,10 @@ class _UserLoginState extends State<UserLogin> {
         children: [
           Column(
             children: <Widget>[
-              UserInfoLabelForm(text: 'Email:'),
               _email(),
-              UserInfoLabelForm(text: 'Password'),
               _password(),
-              Row(mainAxisAlignment: MainAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [_donthaveAccount(), _forgotPassword()],
               ),
               _loginButton()

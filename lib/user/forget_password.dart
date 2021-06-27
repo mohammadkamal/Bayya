@@ -8,19 +8,14 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   final _formKeyL = GlobalKey<FormState>();
-  final TextEditingController emailCtrl = TextEditingController();
-
-  Widget _mainText() {
-    return Container(
-        child: Text('Please insert your email address', softWrap: true));
-  }
+  final TextEditingController _emailCtrl = TextEditingController();
 
   Widget _emailForm() {
     return TextFormField(
-      controller: emailCtrl,
+      controller: _emailCtrl,
       decoration: InputDecoration(
           labelText: 'Enter your email',
-          border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
       validator: (value) {
         if (value.isEmpty) {
           return 'This field is required';
@@ -37,6 +32,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)))),
             onPressed: () {
               if (_formKeyL.currentState.validate()) {
                 _reset();
@@ -46,7 +45,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   }
 
   Future<void> _reset() async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailCtrl.text);
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailCtrl.text);
   }
 
   @override
@@ -57,9 +56,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           Form(
             key: _formKeyL,
             child: Column(
-                children: [_mainText(), _emailForm(), _resetButton()],
-              ),
+              children: [_emailForm(), _resetButton()],
             ),
+          ),
         ]));
   }
 }

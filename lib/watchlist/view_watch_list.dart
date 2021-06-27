@@ -10,7 +10,6 @@ class ViewWatchList extends StatefulWidget {
 }
 
 class _ViewWatchListState extends State<ViewWatchList> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,19 +18,17 @@ class _ViewWatchListState extends State<ViewWatchList> {
           actions: <Widget>[ShoppingCartUpperIcon()],
         ),
         body: Container(
-          color: Colors.grey,
-          child: ListView(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              children: Provider.of<Watchlist>(context).watchlistMap.isNotEmpty
-                  ? Provider.of<Watchlist>(context)
-                      .watchlistMap
-                      .keys
-                      .map((productId) {
-                      return WatchlistItem(
-                        productId: productId,
-                      );
-                    }).toList()
-                  : []),
-        ));
+            child: ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                itemCount:
+                    Provider.of<Watchlist>(context).watchlistMap.keys.length,
+                itemBuilder: (context, index) {
+                  return WatchlistItem(
+                    productId: Provider.of<Watchlist>(context)
+                        .watchlistMap
+                        .keys
+                        .elementAt(index),
+                  );
+                })));
   }
 }

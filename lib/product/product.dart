@@ -13,11 +13,13 @@ class Product {
       this.price,
       this.category,
       this.imageURL,
-      this.ratings});
+      this.dateTimeAddition,
+      this.quantity});
 
   //Fields & Variables
   String name, shortDescription, longDescription, vendor, imageURL;
-  double price, ratings;
+  DateTime dateTimeAddition;
+  double price;
   int quantity;
   ProductCategory category;
 
@@ -66,15 +68,15 @@ ProductCategory productCategoryFromString(String str) {
 
 Product _$ProductFromJson(Map<String, dynamic> json) {
   return Product(
-    name: json['name'],
-    shortDescription: json['shortDescription'],
-    longDescription: json['longDescription'],
-    vendor: json['vendor'],
-    price: json['price'],
-    category: productCategoryFromString(json['category']),
-    imageURL: json['imageURL'],
-    ratings: json['ratings'],
-  );
+      name: json['name'],
+      shortDescription: json['shortDescription'],
+      longDescription: json['longDescription'],
+      vendor: json['vendor'],
+      price: json['price'],
+      category: productCategoryFromString(json['category']),
+      imageURL: json['imageURL'],
+      dateTimeAddition: json['dateTimeAddition'].toDate(),
+      quantity: json['quantity']);
 }
 
 Map<String, dynamic> _$ProductToJson(Product product) => <String, dynamic>{
@@ -85,5 +87,6 @@ Map<String, dynamic> _$ProductToJson(Product product) => <String, dynamic>{
       'price': product.price,
       'category': product.productCategoryToString(),
       'imageURL': product.imageURL,
-      'ratings': product.ratings
+      'dateTimeAddition': product.dateTimeAddition,
+      'quantity': product.quantity
     };

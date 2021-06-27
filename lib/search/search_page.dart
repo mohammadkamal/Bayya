@@ -9,57 +9,36 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  bool typing = true;
-  final textController = TextEditingController();
   List<String> _listStr = [];
 
-  @override
-  void dispose() {
-    textController.dispose();
-    super.dispose();
+  void _onSearch(String strValue) {
+    setState(() {
+      _listStr.clear();
+      context.read<Catalog>().productsCatalog.forEach((key, value) {
+        if (value.name.toLowerCase().contains(strValue.toLowerCase())) {
+          _listStr.add(key);
+        }
+      });
+    });
   }
 
   Widget _searchTextField() {
-    return TextField(
-      decoration: InputDecoration(
-          border: InputBorder.none, hintText: 'type something here'),
-      controller: textController,
-    );
-  }
-
-  Widget _searchText() {
     return Container(
-      alignment: Alignment.topLeft,
-      child: _searchTextField(),
-    );
+        alignment: Alignment.topLeft,
+        child: TextField(
+          textInputAction: TextInputAction.search,
+          onChanged: _onSearch,
+          onSubmitted: _onSearch,
+          decoration: InputDecoration(
+              border: InputBorder.none, hintText: 'type something here'),
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: typing ? _searchText() : Text('Search'),
-        actions: [
-          IconButton(
-            icon: Icon(typing ? Icons.done : Icons.search),
-            onPressed: () {
-              setState(() {
-                typing = !typing;
-                if(_listStr.isNotEmpty)
-                {
-                  _listStr.clear();
-                }
-                context.read<Catalog>().productsCatalog.forEach((key, value) {
-                  if (value.name
-                      .toLowerCase()
-                      .contains(this.textController.text.toLowerCase())) {
-                    _listStr.add(key);
-                  }
-                });
-              });
-            },
-          ),
-        ],
+        title: _searchTextField(),
       ),
       body: ProductSearchResults(matchResults: _listStr),
     );

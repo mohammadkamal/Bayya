@@ -1,5 +1,8 @@
+import 'package:bayya/cart/shopping_cart.dart';
 import 'package:bayya/cart/shopping_cart_list.dart';
+import 'package:bayya/widget_utilities/tween_animation_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ShoppingCartUpperIcon extends StatefulWidget {
   @override
@@ -7,32 +10,38 @@ class ShoppingCartUpperIcon extends StatefulWidget {
 }
 
 class _ShoppingCartUpperIconState extends State<ShoppingCartUpperIcon> {
-  Route _createRouteToShoppingCart() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            ShoppingCartList(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
+  Widget _productsNumber() {
+    if (Provider.of<ShoppingCart>(context).shoppingItemQuantites.keys.length >
+        0) {
+      return CircleAvatar(
+          backgroundColor: Colors.red,
+          radius: 10,
+          child: Text(
+              Provider.of<ShoppingCart>(context)
+                  .shoppingItemQuantites
+                  .keys
+                  .length
+                  .toString(),
+              style: TextStyle(color: Colors.white)));
+    } else {
+      return Container();
+    }
+  }
 
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
+  Widget _button() {
+    return IconButton(
+      icon: Icon(Icons.shopping_cart),
+      onPressed: () {
+        Navigator.of(context)
+            .push(TweenAnimationRoute().playAnimation(ShoppingCartList()));
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.shopping_cart, color: Colors.white),
-      onPressed: () {
-        Navigator.of(context).push(_createRouteToShoppingCart());
-      },
+    return Stack(
+      children: [_button(), _productsNumber()],
     );
   }
 }

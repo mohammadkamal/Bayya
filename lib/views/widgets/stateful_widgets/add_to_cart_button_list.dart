@@ -52,7 +52,7 @@ class _AddToCartButtonListState extends State<AddToCartButtonList> {
           .showSnackBar(_snackBarCart(productName, shoppingCartViewModel));
     } else {
       showDialog(
-          context: context, builder: (context) => SignInToPerfomAction());
+          context: context, builder: (context) => const SignInToPerfomAction());
     }
   }
 
@@ -86,7 +86,7 @@ class _AddToCartButtonListState extends State<AddToCartButtonList> {
                     shoppingCartViewModel.isInShoppingCart(widget.productId)
                         ? 'In cart'
                         : 'Add to cart',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )
                 ],
               ),

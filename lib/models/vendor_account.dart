@@ -31,17 +31,4 @@ class VendorAccount {
   String toString() {
     return 'VendorAccount(displayName: $displayName, email: $email, uid: $uid)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is VendorAccount &&
-        other.displayName == this.displayName &&
-        other.email == this.email &&
-        other.uid == this.uid;
-  }
-
-  @override
-  int get hashCode => displayName.hashCode ^ email.hashCode ^ uid.hashCode;
 }

@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartList extends StatelessWidget {
+  const ShoppingCartList({Key key}) : super(key: key);
+
   Widget _proceedButton() {
     return ElevatedButton(
       onPressed: null,
-      child: Text('Proceed to checkout',
+      child: const Text('Proceed to checkout',
           style: TextStyle(fontSize: 20, color: Colors.white)),
       style: ButtonStyle(
           backgroundColor:
@@ -23,7 +25,7 @@ class ShoppingCartList extends StatelessWidget {
         Provider.of<ShoppingCartViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping Cart'),
+        title: const Text('Shopping Cart'),
       ),
       body: viewModel.shoppingCartMap.isNotEmpty
           ? _BuildCartProducts()
@@ -47,11 +49,11 @@ class _EmptyCartContent extends StatelessWidget {
               size: 55,
               color: Colors.blue[300],
             ),
-            Text('Start shopping now'),
+            const Text('Start shopping now'),
             OutlinedButton(
                 onPressed: () => Navigator.pushReplacement(context,
-                    TweenAnimationRoute().playAnimation(CatalogView())),
-                child: Text('Discover products'))
+                    TweenAnimationRoute().playAnimation(const CatalogView())),
+                child: const Text('Discover products'))
           ],
         ));
   }
@@ -68,7 +70,7 @@ class _BuildCartProductsState extends State<_BuildCartProducts> {
     return Consumer<ShoppingCartViewModel>(
         builder: (buildContext, viewModel, childWidget) {
       return ListView.builder(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           itemCount: viewModel.shoppingCartMap.keys.length,
           itemBuilder: (context, index) {
             return ShoppingCartItem(

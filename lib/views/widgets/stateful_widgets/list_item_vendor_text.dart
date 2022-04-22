@@ -11,13 +11,10 @@ class ListItemVendorText extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.only(bottom: 4),
         child: vendorAccount == null
-            ? Text("Vendor isn't provided",
+            ? const Text("Vendor isn't provided",
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.red))
-            : Text(
-                vendorAccount.displayName != null
-                    ? vendorAccount.displayName
-                    : vendorAccount.email,
-                style: TextStyle(fontWeight: FontWeight.bold)));
+            : Text(vendorAccount.displayName ?? vendorAccount.email,
+                style: const TextStyle(fontWeight: FontWeight.bold)));
   }
 }

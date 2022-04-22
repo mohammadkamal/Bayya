@@ -13,13 +13,12 @@ class ProductSearchResults extends StatefulWidget {
 class _ProductSearchResultsState extends State<ProductSearchResults> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            itemCount: widget.matchResults.length,
-            itemBuilder: (context, index) {
-              return CatalogListItem(
-                  productId: widget.matchResults.elementAt(index));
-            }));
+    return ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        itemCount: widget.matchResults.length,
+        itemBuilder: (context, index) {
+          return CatalogListItem(
+              productId: widget.matchResults.elementAt(index));
+        });
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistCard extends StatelessWidget {
+  const WatchlistCard({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     int _watchlistCount =
@@ -12,26 +14,17 @@ class WatchlistCard extends StatelessWidget {
             .watchlistMap
             .keys
             .length;
-    if (_watchlistCount == null) _watchlistCount = 0;
+    _watchlistCount ??= 0;
     return GestureDetector(
         onTap: () => Navigator.of(context)
-            .push(TweenAnimationRoute().playAnimation(ViewWatchList())),
+            .push(TweenAnimationRoute().playAnimation(const ViewWatchList())),
         child: Row(
           children: [
-            Icon(Icons.favorite, color: Colors.red),
-            Text('Watchlist'),
+            const Icon(Icons.favorite, color: Colors.red),
+            const Text('Watchlist'),
             if (_watchlistCount > 0)
               Text(_watchlistCount > 9 ? '9+' : _watchlistCount.toString())
           ],
         ));
-    return ListTile(
-      title: Text('Watchlist'),
-      leading: Icon(Icons.favorite, color: Colors.red),
-      onTap: () => Navigator.of(context)
-          .push(TweenAnimationRoute().playAnimation(ViewWatchList())),
-      trailing: _watchlistCount > 0
-          ? Text(_watchlistCount > 9 ? '9+' : _watchlistCount.toString())
-          : Container(),
-    );
   }
 }

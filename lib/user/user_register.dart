@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserRegister extends StatefulWidget {
+  const UserRegister({Key key}) : super(key: key);
+
   @override
   _UserRegisterState createState() => _UserRegisterState();
 }
@@ -45,8 +47,8 @@ class _UserRegisterState extends State<UserRegister> {
               _obscurePasswordText = !_obscurePasswordText;
             }),
         icon: _obscurePasswordText
-            ? Icon(CupertinoIcons.eye_slash)
-            : Icon(CupertinoIcons.eye));
+            ? const Icon(CupertinoIcons.eye_slash)
+            : const Icon(CupertinoIcons.eye));
   }
 
   Widget _password() {
@@ -72,15 +74,15 @@ class _UserRegisterState extends State<UserRegister> {
   Widget _haveAccount() {
     return TextButton(
         onPressed: () => Navigator.push(
-            context, TweenAnimationRoute().playAnimation(UserLogin())),
-        child: Text('Already hava an account?'));
+            context, TweenAnimationRoute().playAnimation(const UserLogin())),
+        child: const Text('Already hava an account?'));
   }
 
   Widget _submitButton() {
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 16.0),
-        margin: EdgeInsets.only(left: 10, right: 10),
+        margin: const EdgeInsets.only(left: 10, right: 10),
         child: ElevatedButton(
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -91,18 +93,18 @@ class _UserRegisterState extends State<UserRegister> {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        content: Container(child: LinearProgressIndicator()),
+                      return const AlertDialog(
+                        content: LinearProgressIndicator(),
                       );
                     });
                 // ignore: unused_local_variable
                 var result = await _register()
                     .whenComplete(() => Navigator.pop(context))
                     .then((value) => Navigator.pushReplacement(context,
-                        TweenAnimationRoute().playAnimation(CatalogView())));
+                        TweenAnimationRoute().playAnimation(const CatalogView())));
               }
             },
-            child: Text('Submit')));
+            child: const Text('Submit')));
   }
 
   Future<void> _register() async {
@@ -110,27 +112,27 @@ class _UserRegisterState extends State<UserRegister> {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailCtrl.text, password: _passCtrl.text);
-      print('success');
+      //print('success');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        //print('The password provided is too weak.');
         msg = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        //print('The account already exists for that email.');
         msg = 'The account already exists for that email.';
       }
       return showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(content: Container(child: Text(msg)));
+            return AlertDialog(content: Text(msg));
           });
     } catch (e) {
-      print(e);
+      //print(e);
       msg = e.toString();
       return showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(content: Container(child: Text(msg)));
+            return AlertDialog(content: Text(msg));
           });
     }
   }
@@ -156,7 +158,7 @@ class _UserRegisterState extends State<UserRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register a new user'),
+        title: const Text('Register a new user'),
       ),
       body: _mainForm(),
     );

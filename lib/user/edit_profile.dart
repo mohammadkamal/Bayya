@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EditProfile extends StatefulWidget {
+  const EditProfile({Key key}) : super(key: key);
+
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -11,11 +13,12 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _displayNameCtrl;
   final _scaffoldStateKey = GlobalKey<ScaffoldState>();
 
+  @override
   void initState() {
     super.initState();
     // Null bug from FirebaseAuth
     if (FirebaseAuth.instance.currentUser.displayName == null) {
-      print('firebase null bug');
+      //print('firebase null bug');
       _displayName = 'User name is not available';
     } else {
       if (FirebaseAuth.instance.currentUser.displayName.isEmpty) {
@@ -32,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'User name',
             style: TextStyle(color: Colors.grey, fontSize: 12),
           ),
@@ -42,7 +45,7 @@ class _EditProfileState extends State<EditProfile> {
         ],
       ),
       trailing: IconButton(
-        icon: Icon(Icons.edit),
+        icon: const Icon(Icons.edit),
         onPressed: () {
           _scaffoldStateKey.currentState
               .showBottomSheet((context) => _displayNameSheet());
@@ -54,8 +57,8 @@ class _EditProfileState extends State<EditProfile> {
   Widget _displayNameLabel() {
     return Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 5, bottom: 5),
-        child: Text(
+        padding: const EdgeInsets.only(left: 5, bottom: 5),
+        child: const Text(
           'New display name:',
           softWrap: true,
         ));
@@ -64,7 +67,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget _displayNameTextForm() {
     return TextFormField(
       autofocus: true,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
           border: OutlineInputBorder(borderSide: BorderSide(width: 7))),
       controller: _displayNameCtrl,
     );
@@ -77,13 +80,13 @@ class _EditProfileState extends State<EditProfile> {
               .updateDisplayName(_displayNameCtrl.text)
               .then((value) => Navigator.pop(context));
         },
-        child: Text('Update'));
+        child: const Text('Update'));
   }
 
   Widget _displayNameCanelButton() {
     return ElevatedButton(
       onPressed: () => Navigator.pop(context),
-      child: Text('Cancel'),
+      child: const Text('Cancel'),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
     );
@@ -109,7 +112,7 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       key: _scaffoldStateKey,
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: ListView(
         children: [_displayNameTile()],

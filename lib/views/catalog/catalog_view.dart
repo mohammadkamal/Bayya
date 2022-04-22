@@ -9,21 +9,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../enums/product_list_type.dart';
 import 'catalog_grid_item_view.dart';
 import 'catalog_list_item_view.dart';
 import 'catalog_viewmodel.dart';
 
-enum ListTypeEnum { List, Grid }
-
 class CatalogView extends StatefulWidget {
+  const CatalogView({Key key}) : super(key: key);
+
   @override
   _CatalogViewState createState() => _CatalogViewState();
 }
 
 class _CatalogViewState extends State<CatalogView> {
-  ListTypeEnum _listTypeEnum = ListTypeEnum.List;
+  ProductListType _listTypeEnum = ProductListType.list;
   CatalogViewModel catalogViewModel;
 
+  @override
   void initState() {
     catalogViewModel = CatalogViewModel();
     catalogViewModel.addListener(() {
@@ -40,10 +42,10 @@ class _CatalogViewState extends State<CatalogView> {
 
   Widget _upperSearchIcon() {
     return IconButton(
-        icon: Icon(Icons.search),
+        icon: const Icon(Icons.search),
         onPressed: () {
           Navigator.push(
-              context, TweenAnimationRoute().playAnimation(SearchPage()));
+              context, TweenAnimationRoute().playAnimation(const SearchPage()));
         });
   }
 
@@ -53,20 +55,21 @@ class _CatalogViewState extends State<CatalogView> {
       children: [
         IconButton(
           onPressed: () => setState(() {
-            _listTypeEnum = ListTypeEnum.Grid;
+            _listTypeEnum = ProductListType.grid;
           }),
           icon: Icon(
             Icons.grid_on,
-            color:
-                _listTypeEnum == ListTypeEnum.Grid ? Colors.blue : Colors.black,
+            color: _listTypeEnum == ProductListType.grid
+                ? Colors.blue
+                : Colors.black,
           ),
         ),
         IconButton(
             onPressed: () => setState(() {
-                  _listTypeEnum = ListTypeEnum.List;
+                  _listTypeEnum = ProductListType.list;
                 }),
             icon: Icon(CupertinoIcons.text_alignleft,
-                color: _listTypeEnum == ListTypeEnum.List
+                color: _listTypeEnum == ProductListType.list
                     ? Colors.blue
                     : Colors.black))
       ],
@@ -79,19 +82,19 @@ class _CatalogViewState extends State<CatalogView> {
         value: catalogViewModel,
         builder: (buildContext, childWidget) => Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'Discover',
               ),
-              actions: <Widget>[_upperSearchIcon(), ShoppingCartUpperIcon()],
+              actions: <Widget>[_upperSearchIcon(), const ShoppingCartUpperIcon()],
             ),
-            drawer: AppSideBar(),
+            drawer: const AppSideBar(),
             body: RefreshIndicator(
                 onRefresh: _onRefresh,
                 child: Stack(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 40),
-                      child: _listTypeEnum == ListTypeEnum.Grid
+                      margin: const EdgeInsets.only(top: 40),
+                      child: _listTypeEnum == ProductListType.grid
                           ? _ProductsGridBuilder(
                               products: catalogViewModel.productsMap,
                             )
@@ -114,7 +117,7 @@ class _ProductsGridBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (products.isNotEmpty) {
       return GridView.builder(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         itemCount: products.keys.length,
         itemBuilder: (context, index) {
           return CatalogGridItem(
@@ -122,14 +125,14 @@ class _ProductsGridBuilder extends StatelessWidget {
             product: products.values.elementAt(index),
           );
         },
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
       );
     } else {
       return Container(
         alignment: Alignment.center,
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       );
     }
   }
@@ -144,7 +147,7 @@ class _ProductsListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (products.isNotEmpty) {
       return ListView.builder(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           itemCount: products.keys.length,
           itemBuilder: (context, index) {
             return CatalogListItem(
@@ -154,7 +157,7 @@ class _ProductsListBuilder extends StatelessWidget {
     } else {
       return Container(
         alignment: Alignment.center,
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       );
     }
   }

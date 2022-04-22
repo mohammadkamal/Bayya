@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistItem extends StatefulWidget {
-  WatchlistItem({this.productId});
   final String productId;
+
+  const WatchlistItem({Key key, this.productId}) : super(key: key);
 
   @override
   _WatchlistItemState createState() => _WatchlistItemState();
@@ -34,7 +35,7 @@ class _WatchlistItemState extends State<WatchlistItem> {
   Widget _rightColumn(String productTitle, String productDescription,
       double productPrice, VendorAccount productVendor) {
     return Container(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -108,7 +109,7 @@ class _WatchlistItemImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Column(
           children: [
             ListItemImage(
@@ -130,7 +131,7 @@ class _WatchlistItemTitle extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
           softWrap: true,
         ));

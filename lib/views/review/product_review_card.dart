@@ -22,7 +22,7 @@ class ProductReviewCard extends StatefulWidget {
 class _ProductReviewCardState extends State<ProductReviewCard> {
   Widget _previewReview(ProductReview review) {
     return Container(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             border: Border.all(), borderRadius: BorderRadius.circular(20)),
         child: Column(
@@ -39,10 +39,8 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
               ],
             ),
             Text(review.content),
-            Container(
-              child: Row(
-                children: _stars(review.rating),
-              ),
+            Row(
+              children: _stars(review.rating),
             )
           ],
         ));
@@ -53,7 +51,7 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
       if (index < rating) {
         return Icon(Icons.star_rounded, color: Colors.yellow[700]);
       } else {
-        return Icon(Icons.star_outline_rounded);
+        return const Icon(Icons.star_outline_rounded);
       }
     });
     return _list;
@@ -70,13 +68,13 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
               return Text(snapshot.data['email']);
             }
           } else {
-            return Text('Name is not provided');
+            return const Text('Name is not provided');
           }
         });
   }
 
   Widget _noReviewsData() {
-    return Text('No reviews yet...');
+    return const Text('No reviews yet...');
   }
 
   Widget _writeReviewButton() {
@@ -89,7 +87,7 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
                 if (FirebaseAuth.instance.currentUser == null) {
                   showDialog(
                       context: context,
-                      builder: (context) => SignInToPerfomAction());
+                      builder: (context) => const SignInToPerfomAction());
                 } else {
                   if (!snapshot.data) {
                     Navigator.of(context).push(TweenAnimationRoute()
@@ -102,17 +100,17 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
                   }
                 }
               },
-              child: Text('Write a review'));
+              child: const Text('Write a review'));
         });
   }
 
   Widget _duplicateReviewDialog() {
     return AlertDialog(
-        title: Text('Duplicate'),
-        content: Text('You already reviewed this product!'),
+        title: const Text('Duplicate'),
+        content: const Text('You already reviewed this product!'),
         actions: [
           TextButton(
-            child: Text('Okay'),
+            child: const Text('Okay'),
             onPressed: () => Navigator.pop(context),
           )
         ]);
@@ -122,7 +120,7 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Reviews',
           style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
         ),
@@ -137,7 +135,7 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
                 .push(TweenAnimationRoute().playAnimation(ProductReviewsList(
               productId: widget.productId,
             ))),
-        child: Text('Show all reviews'));
+        child: const Text('Show all reviews'));
   }
 
   @override
@@ -147,7 +145,7 @@ class _ProductReviewCardState extends State<ProductReviewCard> {
             .fetchReviewByIndex(widget.productId, 0),
         builder: (context, snapshot) {
           return Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               decoration: proudctCardDecoration,
               child: Column(children: [
                 _topRow(),

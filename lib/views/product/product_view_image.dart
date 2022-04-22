@@ -28,29 +28,27 @@ class _ProductViewImageState extends State<ProductViewImage> {
   @override
   Widget build(BuildContext context) {
     _getImageURL();
-    return Container(
-      child: Image.network(
-        _imgURL,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes
-                    : null,
-              ));
-        },
-        errorBuilder: (context, error, stackTrace) => Container(
+    return Image.network(
+      _imgURL,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Container(
             alignment: Alignment.center,
-            child: Icon(
-              Icons.broken_image,
-              color: Colors.blue,
-            )),
-      ),
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes
+                  : null,
+            ));
+      },
+      errorBuilder: (context, error, stackTrace) => Container(
+          alignment: Alignment.center,
+          child: const Icon(
+            Icons.broken_image,
+            color: Colors.blue,
+          )),
     );
   }
 }

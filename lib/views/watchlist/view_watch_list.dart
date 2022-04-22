@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ViewWatchList extends StatefulWidget {
+  const ViewWatchList({Key key}) : super(key: key);
+
   @override
   _ViewWatchListState createState() => _ViewWatchListState();
 }
@@ -14,23 +16,21 @@ class _ViewWatchListState extends State<ViewWatchList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Watchlist'),
-          actions: <Widget>[ShoppingCartUpperIcon()],
+          title: const Text('Watchlist'),
+          actions: const <Widget>[ShoppingCartUpperIcon()],
         ),
-        body: Container(
-            child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                itemCount: Provider.of<WatchlistViewModel>(context)
-                    .watchlistMap
-                    .keys
-                    .length,
-                itemBuilder: (context, index) {
-                  return WatchlistItem(
-                    productId: Provider.of<WatchlistViewModel>(context)
-                        .watchlistMap
-                        .keys
-                        .elementAt(index)
-                  );
-                })));
+        body: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            itemCount: Provider.of<WatchlistViewModel>(context)
+                .watchlistMap
+                .keys
+                .length,
+            itemBuilder: (context, index) {
+              return WatchlistItem(
+                  productId: Provider.of<WatchlistViewModel>(context)
+                      .watchlistMap
+                      .keys
+                      .elementAt(index));
+            }));
   }
 }

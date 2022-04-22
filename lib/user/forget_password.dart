@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({Key key}) : super(key: key);
+
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
 }
@@ -41,7 +43,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 _reset();
               }
             },
-            child: Text('Confirm')));
+            child: const Text('Confirm')));
   }
 
   Future<void> _reset() async {
@@ -51,7 +53,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text('Reset password'),
+        title: const Text('Reset password'),
         content: ListView(shrinkWrap: true, children: [
           Form(
             key: _formKeyL,

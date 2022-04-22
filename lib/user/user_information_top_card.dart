@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserInformationTopCard extends StatelessWidget {
+  const UserInformationTopCard({Key key}) : super(key: key);
+
   String _checkLoggedUserName() {
     String temp = 'Not signed in';
 
@@ -33,7 +35,7 @@ class UserInformationTopCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 30,
@@ -53,7 +55,7 @@ class UserInformationTopCard extends StatelessWidget {
                 children: [
                   Text(
                     _checkLoggedUserName(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )
                 ],
               ),

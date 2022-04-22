@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CurrentUserHeaderCard extends StatelessWidget {
+  const CurrentUserHeaderCard({Key key}) : super(key: key);
+
   String get userDisplayName {
     if (FirebaseAuth.instance.currentUser == null ||
         FirebaseAuth.instance.currentUser.isAnonymous) {
@@ -22,7 +24,7 @@ class CurrentUserHeaderCard extends StatelessWidget {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 40,
@@ -37,7 +39,7 @@ class CurrentUserHeaderCard extends StatelessWidget {
           ),
         ],
       ),
-      decoration: BoxDecoration(color: Colors.blue),
+      decoration: const BoxDecoration(color: Colors.blue),
     );
   }
 }

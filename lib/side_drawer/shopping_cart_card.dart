@@ -5,43 +5,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartCard extends StatelessWidget {
+  const ShoppingCartCard({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     int cartCount = Provider.of<ShoppingCartViewModel>(context, listen: false)
         .shoppingCartMap
         .keys
         .length;
-    if (cartCount == null) cartCount = 0;
+    cartCount ??= 0;
     return GestureDetector(
         onTap: () => Navigator.of(context)
-            .push(TweenAnimationRoute().playAnimation(ShoppingCartList())),
+            .push(TweenAnimationRoute().playAnimation(const ShoppingCartList())),
         child: Row(
           children: [
-            Icon(Icons.shopping_cart, color: Colors.lightGreen),
-            Text('Shopping Cart'),
+            const Icon(Icons.shopping_cart, color: Colors.lightGreen),
+            const Text('Shopping Cart'),
             if (cartCount > 0)
               CircleAvatar(
                   backgroundColor: Colors.red,
                   radius: 12,
                   child: Text(
                     cartCount > 9 ? '9+' : cartCount.toString(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ))
           ],
         ));
-    return ListTile(
-        title: Text('Shopping Cart'),
-        leading: Icon(Icons.shopping_cart, color: Colors.lightGreen),
-        onTap: () => Navigator.of(context)
-            .push(TweenAnimationRoute().playAnimation(ShoppingCartList())),
-        trailing: cartCount > 0
-            ? CircleAvatar(
-                backgroundColor: Colors.red,
-                radius: 12,
-                child: Text(
-                  cartCount > 9 ? '9+' : cartCount.toString(),
-                  style: TextStyle(color: Colors.white),
-                ))
-            : Container());
   }
 }

@@ -21,7 +21,7 @@ void main() {
     ShoppingCartViewModel _cart;
     await tester.pumpWidget(Provider<ShoppingCartViewModel>.value(
         value: _cart,
-        child: AddToCartButtonList(productId: 'Xbyh4cRqYTCJhsGUjTNv')));
+        child: const AddToCartButtonList(productId: 'Xbyh4cRqYTCJhsGUjTNv')));
     await _cart.fetchShoppingCart();
 
     final labelFinder = find.text('Add to cart');

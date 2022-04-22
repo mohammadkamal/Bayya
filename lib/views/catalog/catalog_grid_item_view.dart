@@ -59,8 +59,8 @@ class _CatalogGridItemState extends State<CatalogGridItem> {
     return GestureDetector(
         onTap: _onItemTap,
         child: Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -90,7 +90,7 @@ class _CatalogGridItemTitle extends StatelessWidget {
     return Text(
       title,
       textAlign: TextAlign.start,
-      style: TextStyle(fontWeight: FontWeight.bold),
+      style: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
 }
@@ -128,12 +128,12 @@ class _CatalogGridItemAddToCartButtonState
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
             shape: MaterialStateProperty.all<CircleBorder>(
-                CircleBorder(side: BorderSide(width: 5)))),
+                const CircleBorder(side: BorderSide(width: 5)))),
         onPressed: () =>
             _onAddToCartPressed(context, productViewModel, cartViewModel),
         child: isInCart
-            ? Icon(Icons.remove_shopping_cart, color: Colors.white)
-            : Icon(
+            ? const Icon(Icons.remove_shopping_cart, color: Colors.white)
+            : const Icon(
                 Icons.add_shopping_cart,
                 color: Colors.white,
               ));
@@ -146,7 +146,7 @@ class _CatalogGridItemAddToCartButtonState
     productViewModel.onAddToCartTap(
         isInCart: shoppingCartViewModel.isInShoppingCart(widget.productId),
         notSignedIn: () => showDialog(
-            context: context, builder: (context) => SignInToPerfomAction()),
+            context: context, builder: (context) => const SignInToPerfomAction()),
         addToCartFunction: () =>
             shoppingCartViewModel.addToShoppingCart(widget.productId),
         removeFromCartFunction: () =>
@@ -174,14 +174,15 @@ class _CatalogGridItemWatchlistButtonState
     final isWatchlisted = watchlistViewModel.isInWatchlist(widget.productId);
     return OutlinedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.transparent),
             shape: MaterialStateProperty.all<CircleBorder>(
-                CircleBorder(side: BorderSide(width: 5)))),
+                const CircleBorder(side: BorderSide(width: 5)))),
         onPressed: () =>
             _onWatchlistPressed(context, productViewModel, watchlistViewModel),
         child: isWatchlisted
-            ? Icon(Icons.favorite, color: Colors.red)
-            : Icon(
+            ? const Icon(Icons.favorite, color: Colors.red)
+            : const Icon(
                 Icons.favorite_border,
                 color: Colors.red,
               ));
@@ -194,7 +195,7 @@ class _CatalogGridItemWatchlistButtonState
     productViewModel.onAddToCartTap(
         isInCart: watchlistViewModel.isInWatchlist(widget.productId),
         notSignedIn: () => showDialog(
-            context: context, builder: (context) => SignInToPerfomAction()),
+            context: context, builder: (context) => const SignInToPerfomAction()),
         addToCartFunction: () =>
             watchlistViewModel.addToWatchlist(widget.productId),
         removeFromCartFunction: () =>

@@ -16,10 +16,11 @@ class WatchlistButtonList extends StatefulWidget {
 
 class _WatchlistButtonListState extends State<WatchlistButtonList> {
   Widget __iconWatchlist(bool isWatchlisted) {
-    if (isWatchlisted)
-      return Icon(Icons.favorite, color: Colors.red);
-    else
-      return Icon(Icons.favorite_border_outlined);
+    if (isWatchlisted) {
+      return const Icon(Icons.favorite, color: Colors.red);
+    } else {
+      return const Icon(Icons.favorite_border_outlined);
+    }
   }
 
   @override
@@ -34,7 +35,7 @@ class _WatchlistButtonListState extends State<WatchlistButtonList> {
                 : watchlistViewModel.addToWatchlist(widget.productId);
           } else {
             showDialog(
-                context: context, builder: (context) => SignInToPerfomAction());
+                context: context, builder: (context) => const SignInToPerfomAction());
           }
         },
         child: Container(

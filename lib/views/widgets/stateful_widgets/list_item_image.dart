@@ -44,7 +44,7 @@ class _ListItemImage extends State<ListItemImage> {
       },
       errorBuilder: (context, error, stackTrace) => Container(
           alignment: Alignment.center,
-          child: Icon(
+          child: const Icon(
             Icons.broken_image,
             color: Colors.blue,
           )),
@@ -54,6 +54,6 @@ class _ListItemImage extends State<ListItemImage> {
   @override
   Widget build(BuildContext context) {
     _getImageURL();
-    return Container(width: 100, height: 100, child: _imageWidget());
+    return SizedBox(width: 100, height: 100, child: _imageWidget());
   }
 }

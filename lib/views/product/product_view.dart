@@ -14,8 +14,9 @@ import 'product_view_image.dart';
 import 'product_viewmodel.dart';
 
 class ProductView extends StatelessWidget {
-  ProductView({this.productId});
   final String productId;
+
+  const ProductView({Key key, this.productId}) : super(key: key);
 
   Widget _topInfoCard(
       String productTitle, String shortDesc, double productPrice) {
@@ -55,7 +56,7 @@ class ProductView extends StatelessWidget {
 
   Widget _mainProduct(Product product) {
     return Container(
-        margin: EdgeInsets.only(bottom: 40),
+        margin: const EdgeInsets.only(bottom: 40),
         child: ListView(
           children: [
             ProductViewImage(
@@ -80,7 +81,7 @@ class ProductView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
-        actions: <Widget>[ShoppingCartUpperIcon()],
+        actions: const <Widget>[ShoppingCartUpperIcon()],
       ),
       body: Stack(
         children: [_mainProduct(product), _buttonsBottomSheet()],
@@ -99,7 +100,7 @@ class _ProductViewTitle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       child: Text(title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           softWrap: true),
     );
   }
@@ -115,7 +116,7 @@ class _ProductViewPrice extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       child: Text(price.toString() + ' EGP',
-          style: TextStyle(fontWeight: FontWeight.bold), softWrap: true),
+          style: const TextStyle(fontWeight: FontWeight.bold), softWrap: true),
     );
   }
 }
@@ -135,7 +136,7 @@ class _ProductViewLongDescription extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Details:',
             style: TextStyle(
                 fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey),
@@ -158,14 +159,11 @@ class _ProductVendorText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (vendorAccount == null) {
-      return Text("Vendor isn't provided",
+      return const Text("Vendor isn't provided",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red));
     } else {
-      return Text(
-          vendorAccount.displayName != null
-              ? vendorAccount.displayName
-              : vendorAccount.email,
-          style: TextStyle(fontWeight: FontWeight.bold));
+      return Text(vendorAccount.displayName ?? vendorAccount.email,
+          style: const TextStyle(fontWeight: FontWeight.bold));
     }
   }
 }
@@ -200,7 +198,7 @@ class _AddToCartButtonState extends State<_AddToCartButton> {
             ),
             Text(
                 isInCart ? 'Remove from Shopping Cart' : 'Add to Shopping Cart',
-                style: TextStyle(color: Colors.white)),
+                style: const TextStyle(color: Colors.white)),
           ],
         ));
   }
@@ -210,7 +208,7 @@ class _AddToCartButtonState extends State<_AddToCartButton> {
     productViewModel.onAddToCartTap(
         isInCart: shoppingCartViewModel.isInShoppingCart(widget.productId),
         notSignedIn: () => showDialog(
-            context: context, builder: (context) => SignInToPerfomAction()),
+            context: context, builder: (context) => const SignInToPerfomAction()),
         addToCartFunction: () =>
             shoppingCartViewModel.addToShoppingCart(widget.productId),
         removeFromCartFunction: () =>
@@ -238,7 +236,7 @@ class _AddToWatchlistButtonState extends State<_AddToWatchlistButton> {
           _onAddToWatchlistTap(context, productViewModel, watchlistViewModel),
       style: ButtonStyle(
           shape: MaterialStateProperty.all<CircleBorder>(
-              CircleBorder(side: BorderSide(width: 5)))),
+              const CircleBorder(side: BorderSide(width: 5)))),
       child: Icon(
         isWatchlisted ? Icons.favorite : Icons.favorite_border,
         color: Colors.red,
@@ -253,7 +251,7 @@ class _AddToWatchlistButtonState extends State<_AddToWatchlistButton> {
     productViewModel.onWatchlistTap(
         isWatchlisted: watchlistViewModel.isInWatchlist(widget.productId),
         notSignedIn: () => showDialog(
-            context: context, builder: (context) => SignInToPerfomAction()),
+            context: context, builder: (context) => const SignInToPerfomAction()),
         watchFunction: () =>
             watchlistViewModel.addToWatchlist(widget.productId),
         unwatchFunction: () =>

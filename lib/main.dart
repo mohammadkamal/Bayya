@@ -20,10 +20,12 @@ void main() {
     ),
     ChangeNotifierProvider(create: (context) => CustomerDatabase()),
     ChangeNotifierProvider(create: (context) => ReviewsDatabase()),
-  ], child: BayyaApplication()));
+  ], child: const BayyaApplication()));
 }
 
 class BayyaApplication extends StatefulWidget {
+  const BayyaApplication({Key key}) : super(key: key);
+
   @override
   _BayyaApplicationState createState() => _BayyaApplicationState();
 }
@@ -32,7 +34,7 @@ class _BayyaApplicationState extends State<BayyaApplication> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   AppBarTheme _appBarTheme() {
-    return AppBarTheme(
+    return const AppBarTheme(
         //backwardsCompatibility: false,
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
@@ -52,22 +54,20 @@ class _BayyaApplicationState extends State<BayyaApplication> {
       future: _initialization,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          print('Error occured');
-          return Container(
-            child: Text(snapshot.error),
-          );
+          //print('Error occured');
+          return Text(snapshot.error);
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
             title: 'Bayya',
             theme: _mainTheme(),
-            home: CatalogView(),
+            home: const CatalogView(),
           );
         }
 
         return Container(
-          child: CircularProgressIndicator(),
+          child: const CircularProgressIndicator(),
           alignment: Alignment.center,
         );
       },

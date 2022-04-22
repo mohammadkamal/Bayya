@@ -26,7 +26,7 @@ class _ShowProductReviewState extends State<ShowProductReview> {
               return Text(snapshot.data['email']);
             }
           } else {
-            return Text('Name is not provided');
+            return const Text('Name is not provided');
           }
         });
   }
@@ -36,7 +36,7 @@ class _ShowProductReviewState extends State<ShowProductReview> {
       if (index < rating) {
         return Icon(Icons.star_rounded, color: Colors.yellow[700]);
       } else {
-        return Icon(Icons.star_border_rounded);
+        return const Icon(Icons.star_border_rounded);
       }
     });
     return _list;
@@ -53,8 +53,8 @@ class _ShowProductReviewState extends State<ShowProductReview> {
           }
           if (snapshot.hasData) {
             return Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration: proudctCardDecoration,
                 child: Column(
                   children: [
@@ -70,16 +70,14 @@ class _ShowProductReviewState extends State<ShowProductReview> {
                       ],
                     ),
                     Text(snapshot.data.content),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: _stars(snapshot.data.rating),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: _stars(snapshot.data.rating),
                     )
                   ],
                 ));
           } else {
-            return Text('No data available');
+            return const Text('No data available');
           }
         });
   }
@@ -98,7 +96,7 @@ class _ProductReviewsListState extends State<ProductReviewsList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Reviews'),
+          title: const Text('Reviews'),
         ),
         body: FutureBuilder(
           future: Provider.of<ReviewsDatabase>(context)
@@ -112,7 +110,7 @@ class _ProductReviewsListState extends State<ProductReviewsList> {
                 );
               }).toList());
             } else {
-              return Text('No reviews yet...');
+              return const Text('No reviews yet...');
             }
           },
         ));

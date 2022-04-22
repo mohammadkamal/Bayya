@@ -1,1 +1,1 @@
-enum ProductCategory { Clothes, Elctronics, Food }
+enum ProductCategory { clothes, elctronics, food }

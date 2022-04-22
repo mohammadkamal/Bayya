@@ -6,7 +6,8 @@ class EnumString {
   }
 
   static dynamic convertFromString(List enumValues, String item) {
-    var returnValue;
+    // TODO: Remove dynamic
+    dynamic returnValue;
     for (var value in enumValues) {
       if (item == convertToString(value)) {
         returnValue = value;

@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AccountLoggedInPage extends StatefulWidget {
+  const AccountLoggedInPage({Key key}) : super(key: key);
+
   @override
   _AccountLoggedInPageState createState() => _AccountLoggedInPageState();
 }
@@ -12,16 +14,16 @@ class AccountLoggedInPage extends StatefulWidget {
 class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
   Widget _accountSettings() {
     return ListTile(
-        leading: Icon(Icons.person),
-        title: Text('Edit Profile'),
+        leading: const Icon(Icons.person),
+        title: const Text('Edit Profile'),
         onTap: () => Navigator.push(
-            context, TweenAnimationRoute().playAnimation(EditProfile())));
+            context, TweenAnimationRoute().playAnimation(const EditProfile())));
   }
 
   Widget _signOut() {
     return ListTile(
-      leading: Icon(Icons.exit_to_app),
-      title: Text('Sign out'),
+      leading: const Icon(Icons.exit_to_app),
+      title: const Text('Sign out'),
       onTap: () {
         FirebaseAuth.instance.signOut();
         Navigator.pop(context);
@@ -46,7 +48,7 @@ class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
         title: Text(_pageTitle),
       ),
       body: ListView(
-        children: [UserInformationTopCard(), _accountSettings(), _signOut()],
+        children: [const UserInformationTopCard(), _accountSettings(), _signOut()],
       ),
     );
   }

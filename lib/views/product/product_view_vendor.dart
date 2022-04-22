@@ -12,13 +12,13 @@ class ProductViewVendor extends StatefulWidget {
 class _ProductViewVendorState extends State<ProductViewVendor> {
   Widget _vendorText() {
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 2), () => 'vendor'),
+        future: Future.delayed(const Duration(seconds: 2), () => 'vendor'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Text(snapshot.data,
-                style: TextStyle(fontWeight: FontWeight.bold));
+                style: const TextStyle(fontWeight: FontWeight.bold));
           } else {
-            return Text("Vendor isn't provieded");
+            return const Text("Vendor isn't provieded");
           }
         });
   }
@@ -32,7 +32,7 @@ class _ProductViewVendorState extends State<ProductViewVendor> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Sold by:',
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
           ),

@@ -1,0 +1,1 @@
+enum ProductListType { list, grid }

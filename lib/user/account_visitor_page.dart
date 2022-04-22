@@ -5,6 +5,8 @@ import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 
 class AccountVisitorPage extends StatefulWidget {
+  const AccountVisitorPage({Key key}) : super(key: key);
+
   @override
   _AccountVisitorPageState createState() => _AccountVisitorPageState();
 }
@@ -12,19 +14,19 @@ class AccountVisitorPage extends StatefulWidget {
 class _AccountVisitorPageState extends State<AccountVisitorPage> {
   Widget _registerCard() {
     return ListTile(
-      leading: Icon(Icons.person_add),
-      title: Text('Register'),
+      leading: const Icon(Icons.person_add),
+      title: const Text('Register'),
       onTap: () => Navigator.push(
-          context, TweenAnimationRoute().playAnimation(UserRegister())),
+          context, TweenAnimationRoute().playAnimation(const UserRegister())),
     );
   }
 
   Widget _loginCard() {
     return ListTile(
-      leading: Icon(Icons.lock_open),
-      title: Text('Login'),
+      leading: const Icon(Icons.lock_open),
+      title: const Text('Login'),
       onTap: () => Navigator.push(
-          context, TweenAnimationRoute().playAnimation(UserLogin())),
+          context, TweenAnimationRoute().playAnimation(const UserLogin())),
     );
   }
 
@@ -32,10 +34,10 @@ class _AccountVisitorPageState extends State<AccountVisitorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('My Account'),
+          title: const Text('My Account'),
         ),
         body: ListView(
-          children: [UserInformationTopCard(), _registerCard(), _loginCard()],
+          children: [const UserInformationTopCard(), _registerCard(), _loginCard()],
         ));
   }
 }

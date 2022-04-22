@@ -35,7 +35,7 @@ class _WriteReviewState extends State<WriteReview> {
             (index) => IconButton(
                 onPressed: () => setState(() => _currentRating = index),
                 icon: _currentRating < index
-                    ? Icon(Icons.star_border_rounded)
+                    ? const Icon(Icons.star_border_rounded)
                     : Icon(Icons.star_rounded, color: Colors.yellow[700]))));
   }
 
@@ -46,7 +46,7 @@ class _WriteReviewState extends State<WriteReview> {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)))),
         onPressed: _sendReviewData,
-        child: Text('Submit'));
+        child: const Text('Submit'));
   }
 
   Future<void> _sendReviewData() async {
@@ -63,7 +63,7 @@ class _WriteReviewState extends State<WriteReview> {
         builder: (context) => AlertDialog(
                 content: Container(
               alignment: Alignment.center,
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             )));
 
     context.read<ReviewsDatabase>().addReview(_productReview).then((value) {
@@ -78,7 +78,7 @@ class _WriteReviewState extends State<WriteReview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Write a review'),
+        title: const Text('Write a review'),
       ),
       body: ListView(
         children: [_reviewContent(), _starButtons(), _sendReviewButton()],

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:bayya/enums/product_category.dart';
-import 'package:bayya/models/vendor_account.dart';
-import 'package:bayya/utils/enum_string.dart';
+import '../enums/product_category.dart';
+import '../utils/enum_string.dart';
+import 'vendor_account.dart';
 
 class Product {
   //Constructor
@@ -74,7 +74,7 @@ class Product {
         quantity: map['quantity'],
         dateTimeAddition: map['dateTimeAddition'] == null
             ? null
-            : map['dateTimeAddition'].toDate(),
+            : (map['dateTimeAddition']).toDate(),
         imageURL: map['imageURL'],
         price: map['price'],
         shortDescription: map['shortDescription'],
@@ -92,32 +92,4 @@ class Product {
   String toString() {
     return 'Product(name: $name, shortDescription: $shortDescription, longDescription: $longDescription, vendor: $vendor, imageURL: $imageURL, dateTimeAddition: $dateTimeAddition, price: $price, quantity: $quantity, category: $category)';
   }
-
-  @override
-  operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Product &&
-        other.category == this.category &&
-        other.dateTimeAddition == this.dateTimeAddition &&
-        other.imageURL == this.imageURL &&
-        other.longDescription == this.longDescription &&
-        other.name == this.name &&
-        other.price == this.price &&
-        other.quantity == this.quantity &&
-        other.shortDescription == this.shortDescription &&
-        other.vendor == this.vendor;
-  }
-
-  @override
-  int get hashCode =>
-      name.hashCode ^
-      shortDescription.hashCode ^
-      longDescription.hashCode ^
-      vendor.hashCode ^
-      imageURL.hashCode ^
-      dateTimeAddition.hashCode ^
-      price.hashCode ^
-      quantity.hashCode ^
-      category.hashCode;
 }

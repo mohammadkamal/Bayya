@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 BoxDecoration get shoppingCartItemDecoration => BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(color: Colors.grey, spreadRadius: 0.5, blurRadius: 2)
         ],
         borderRadius: BorderRadius.circular(15),

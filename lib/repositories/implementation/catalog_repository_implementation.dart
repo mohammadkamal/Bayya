@@ -18,9 +18,9 @@ class CatalogRepositoryImplementation implements CatalogRepository {
     var _productsMap = <String, Product>{};
 
     return _stream.map((snaps) {
-      snaps.docs.forEach((element) {
+      for (var element in snaps.docs) {
         _productsMap[element.id] = Product.fromMap(element.data());
-      });
+      }
       return _productsMap;
     });
   }

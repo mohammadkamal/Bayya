@@ -17,7 +17,7 @@ class _CatalogListItemImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: ListItemImage(
           imageURL: imageURL,
         ));
@@ -35,7 +35,7 @@ class _CatalogListItemTitle extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
           softWrap: true,
         ));
@@ -59,7 +59,9 @@ class _CatalogListItemPrice extends StatelessWidget {
 class CatalogListItem extends StatelessWidget {
   final String productId;
   final Product product;
-  CatalogListItem({this.productId, this.product});
+
+  const CatalogListItem({Key key, this.productId, this.product})
+      : super(key: key);
 
   Widget _buttonSection() {
     return Container(
@@ -79,7 +81,7 @@ class CatalogListItem extends StatelessWidget {
 
   Widget _rightColumn() {
     return Container(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

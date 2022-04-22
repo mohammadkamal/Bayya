@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({Key key}) : super(key: key);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<String> _listStr = [];
+  final List<String> _listStr = [];
 
   void _onSearch(String strValue) {
     setState(() {
@@ -30,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
           textInputAction: TextInputAction.search,
           onChanged: _onSearch,
           onSubmitted: _onSearch,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
               border: InputBorder.none, hintText: 'type something here'),
         ));
   }

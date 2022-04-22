@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserLogin extends StatefulWidget {
+  const UserLogin({Key key}) : super(key: key);
+
   @override
   _UserLoginState createState() => _UserLoginState();
 }
@@ -42,8 +44,8 @@ class _UserLoginState extends State<UserLogin> {
               _obscurePasswordText = !_obscurePasswordText;
             }),
         icon: _obscurePasswordText
-            ? Icon(CupertinoIcons.eye_slash)
-            : Icon(CupertinoIcons.eye));
+            ? const Icon(CupertinoIcons.eye_slash)
+            : const Icon(CupertinoIcons.eye));
   }
 
   Widget _password() {
@@ -69,27 +71,26 @@ class _UserLoginState extends State<UserLogin> {
   Widget _forgotPassword() {
     return TextButton(
         onPressed: () {
-          return showDialog(
-              context: context, builder: (context) => ForgetPassword());
+          showDialog(context: context, builder: (context) => const ForgetPassword());
         },
-        child: Text('Forgot password?'));
+        child: const Text('Forgot password?'));
   }
 
   Widget _donthaveAccount() {
     return TextButton(
         onPressed: () => Navigator.push(
-            context, TweenAnimationRoute().playAnimation(UserRegister())),
-        child: Text("Don't have an account?"));
+            context, TweenAnimationRoute().playAnimation(const UserRegister())),
+        child: const Text("Don't have an account?"));
   }
 
   Widget _loadingWhenTap() {
-    return Container(child: LinearProgressIndicator());
+    return const LinearProgressIndicator();
   }
 
   Widget _loginButton() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(left: 10, right: 10),
+        margin: const EdgeInsets.only(left: 10, right: 10),
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
             style: ButtonStyle(
@@ -109,10 +110,10 @@ class _UserLoginState extends State<UserLogin> {
                 var result = await _login()
                     .whenComplete(() => Navigator.pop(context))
                     .then((value) => Navigator.pushReplacement(context,
-                        TweenAnimationRoute().playAnimation(CatalogView())));
+                        TweenAnimationRoute().playAnimation(const CatalogView())));
               }
             },
-            child: Text('Login')));
+            child: const Text('Login')));
   }
 
   Future<void> _login() async {
@@ -122,19 +123,19 @@ class _UserLoginState extends State<UserLogin> {
     } on FirebaseAuthException catch (e) {
       String msg = '';
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        //print('No user found for that email.');
         msg = 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        //print('Wrong password provided for that user.');
         msg = 'Wrong password provided for that user.';
       } else {
-        print(e.code);
+        //print(e.code);
         msg = e.code;
       }
       return showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(content: Container(child: Text(msg)));
+            return AlertDialog(content: Text(msg));
           });
     }
   }
@@ -164,7 +165,7 @@ class _UserLoginState extends State<UserLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: _mainForm(),
     );

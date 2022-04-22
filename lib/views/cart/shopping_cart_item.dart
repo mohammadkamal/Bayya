@@ -5,7 +5,6 @@ import 'package:bayya/views/widgets/stateful_widgets/list_item_image.dart';
 import 'package:bayya/views/widgets/styles/box_decorations.dart';
 import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartItem extends StatelessWidget {

@@ -33,6 +33,101 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279218039654:android:ea3deb2b82d85212ca76a7",
+        "android_client_info": {
+          "package_name": "com.example.easacc_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279218039654-ar81makg4msit2quhik5st6rs4d5l4dh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.easacc_task",
+            "certificate_hash": "57c67512519f9cb241bf62593ed5be72f184fecc"
+          }
+        },
+        {
+          "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vlXeJscS0IRkRAqODZEpsvKCB611DUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279218039654:android:319da448a6ae1c57ca76a7",
+        "android_client_info": {
+          "package_name": "com.example.tawasal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vlXeJscS0IRkRAqODZEpsvKCB611DUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279218039654:android:ec5d2e5948967938ca76a7",
+        "android_client_info": {
+          "package_name": "com.shadytech.bayya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vlXeJscS0IRkRAqODZEpsvKCB611DUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279218039654-9s7vmn477rfehkg532vj2sbsdd0tn7oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

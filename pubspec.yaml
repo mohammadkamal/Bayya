@@ -37,9 +37,16 @@ dependencies:
   path_provider: ^2.0.5
   json_annotation: ^4.1.0
 
+dependency_overrides:
+  platform: ^3.1.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_lints: ^1.0.4
+  change_app_package_name: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

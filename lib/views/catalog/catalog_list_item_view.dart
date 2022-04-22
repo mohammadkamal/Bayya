@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bayya/models/product.dart';
 import 'package:bayya/views/catalog/catalog_viewmodel.dart';
 import 'package:bayya/views/product/product_view.dart';

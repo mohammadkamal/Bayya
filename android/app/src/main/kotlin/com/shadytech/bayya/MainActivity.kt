@@ -1,4 +1,4 @@
-package com.mohammadkamal.bayya
+package com.shadytech.bayya
 
 import io.flutter.embedding.android.FlutterActivity
 

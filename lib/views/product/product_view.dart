@@ -7,7 +7,6 @@ import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
 import 'package:bayya/views/widgets/mixed_widgets/shopping_cart_upper_icon.dart';
 import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
 import 'package:bayya/views/widgets/styles/box_decorations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

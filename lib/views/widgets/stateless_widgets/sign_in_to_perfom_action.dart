@@ -1,6 +1,7 @@
-import 'package:bayya/user/user_login.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
+
+import '../../../user/user_login.dart';
+import '../styles/tween_animation_route.dart';
 
 class SignInToPerfomAction extends StatelessWidget {
   const SignInToPerfomAction({Key key}) : super(key: key);

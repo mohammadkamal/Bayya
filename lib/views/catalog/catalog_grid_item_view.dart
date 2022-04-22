@@ -1,13 +1,14 @@
-import 'package:bayya/models/product.dart';
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/product/product_view.dart';
-import 'package:bayya/views/product/product_viewmodel.dart';
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
-import 'package:bayya/views/widgets/stateful_widgets/list_item_image.dart';
-import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/product.dart';
+import '../cart/shopping_cart_viewmodel.dart';
+import '../product/product_view.dart';
+import '../product/product_viewmodel.dart';
+import '../watchlist/watchlist_viewmodel.dart';
+import '../widgets/stateful_widgets/list_item_image.dart';
+import '../widgets/stateless_widgets/sign_in_to_perfom_action.dart';
+import '../widgets/styles/tween_animation_route.dart';
 
 class CatalogGridItem extends StatefulWidget {
   final Product product;

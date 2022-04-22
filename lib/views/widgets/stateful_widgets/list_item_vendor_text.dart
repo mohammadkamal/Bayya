@@ -1,5 +1,6 @@
-import 'package:bayya/models/vendor_account.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/vendor_account.dart';
 
 class ListItemVendorText extends StatelessWidget {
   final VendorAccount vendorAccount;

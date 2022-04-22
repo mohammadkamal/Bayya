@@ -1,9 +1,9 @@
-import 'package:bayya/repositories/abstract/cart_repository.dart';
-import 'package:bayya/repositories/abstract/catalog_repository.dart';
-import 'package:bayya/repositories/abstract/watchlist_repository.dart';
-import 'package:bayya/repositories/implementation/cart_repository_implementation.dart';
-import 'package:bayya/repositories/implementation/catalog_repository_implementation.dart';
-import 'package:bayya/repositories/implementation/watchlist_repository_implementation.dart';
+import '../repositories/abstract/cart_repository.dart';
+import '../repositories/abstract/catalog_repository.dart';
+import '../repositories/abstract/watchlist_repository.dart';
+import '../repositories/implementation/cart_repository_implementation.dart';
+import '../repositories/implementation/catalog_repository_implementation.dart';
+import '../repositories/implementation/watchlist_repository_implementation.dart';
 
 class Injector {
   static final _singleton = Injector._internal();

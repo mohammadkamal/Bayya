@@ -1,8 +1,9 @@
-import 'package:bayya/views/watchlist/watchlist_item.dart';
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
-import 'package:bayya/views/widgets/mixed_widgets/shopping_cart_upper_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/mixed_widgets/shopping_cart_upper_icon.dart';
+import 'watchlist_item.dart';
+import 'watchlist_viewmodel.dart';
 
 class ViewWatchList extends StatefulWidget {
   const ViewWatchList({Key key}) : super(key: key);

@@ -1,14 +1,15 @@
-import 'package:bayya/models/product.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
-import 'package:bayya/views/product/product_view.dart';
-import 'package:bayya/views/widgets/stateful_widgets/add_to_cart_button_list.dart';
-import 'package:bayya/views/widgets/stateful_widgets/list_item_image.dart';
-import 'package:bayya/views/widgets/stateful_widgets/list_item_vendor_text.dart';
-import 'package:bayya/views/widgets/stateful_widgets/watchlist_button_list.dart';
-import 'package:bayya/views/widgets/stateless_widgets/short_description_text.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/product.dart';
+import '../product/product_view.dart';
+import '../widgets/stateful_widgets/add_to_cart_button_list.dart';
+import '../widgets/stateful_widgets/list_item_image.dart';
+import '../widgets/stateful_widgets/list_item_vendor_text.dart';
+import '../widgets/stateful_widgets/watchlist_button_list.dart';
+import '../widgets/stateless_widgets/short_description_text.dart';
+import '../widgets/styles/tween_animation_route.dart';
+import 'catalog_viewmodel.dart';
 
 class _CatalogListItemImage extends StatelessWidget {
   final String imageURL;

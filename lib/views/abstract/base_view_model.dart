@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BaseViewModel extends ChangeNotifier {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  //final scaffoldKey = GlobalKey<ScaffoldState>();
 
   void showSnackBarMessage(context, message) {
     final snackBar = SnackBar(

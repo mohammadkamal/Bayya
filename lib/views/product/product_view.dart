@@ -1,15 +1,15 @@
-import 'package:bayya/models/product.dart';
-import 'package:bayya/models/vendor_account.dart';
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
-import 'package:bayya/views/review/product_review_card.dart';
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
-import 'package:bayya/views/widgets/mixed_widgets/shopping_cart_upper_icon.dart';
-import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
-import 'package:bayya/views/widgets/styles/box_decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/product.dart';
+import '../../models/vendor_account.dart';
+import '../cart/shopping_cart_viewmodel.dart';
+import '../catalog/catalog_viewmodel.dart';
+import '../review/product_review_card.dart';
+import '../watchlist/watchlist_viewmodel.dart';
+import '../widgets/mixed_widgets/shopping_cart_upper_icon.dart';
+import '../widgets/stateless_widgets/sign_in_to_perfom_action.dart';
+import '../widgets/styles/box_decorations.dart';
 import 'product_view_image.dart';
 import 'product_viewmodel.dart';
 

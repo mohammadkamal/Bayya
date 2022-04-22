@@ -1,5 +1,6 @@
-import 'package:bayya/views/catalog/catalog_list_item_view.dart';
 import 'package:flutter/material.dart';
+
+import '../views/catalog/catalog_list_item_view.dart';
 
 class ProductSearchResults extends StatefulWidget {
   final List<String> matchResults;

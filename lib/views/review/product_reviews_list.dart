@@ -1,8 +1,8 @@
-import 'package:bayya/user/customer_database.dart';
-import 'package:bayya/views/widgets/styles/box_decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../user/customer_database.dart';
+import '../widgets/styles/box_decorations.dart';
 import 'reviews_database.dart';
 
 class ShowProductReview extends StatefulWidget {

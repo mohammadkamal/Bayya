@@ -1,8 +1,8 @@
-import 'package:bayya/models/product_review.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/product_review.dart';
 import 'reviews_database.dart';
 
 class WriteReview extends StatefulWidget {

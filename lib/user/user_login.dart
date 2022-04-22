@@ -1,10 +1,11 @@
-import 'package:bayya/user/forget_password.dart';
-import 'package:bayya/user/user_register.dart';
-import 'package:bayya/views/catalog/catalog_view.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../views/catalog/catalog_view.dart';
+import '../views/widgets/styles/tween_animation_route.dart';
+import 'forget_password.dart';
+import 'user_register.dart';
 
 class UserLogin extends StatefulWidget {
   const UserLogin({Key key}) : super(key: key);

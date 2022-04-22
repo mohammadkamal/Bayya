@@ -1,33 +1,44 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-@JsonSerializable()
 class ProductReview {
+  String id;
+  int rating;
+  DocumentReference user;
+  DocumentReference product;
+  String content;
+  DateTime timeAdded;
+
   ProductReview(
-      {this.rating, this.content, this.uid, this.dateTime, this.productId});
-  final int rating;
-  final String content, uid, productId;
-  final DateTime dateTime;
+      {this.id,
+      this.rating,
+      this.content,
+      this.user,
+      this.timeAdded,
+      this.product});
 
-  factory ProductReview.fromJson(Map<String, dynamic> json) =>
-      _$ProductReviewFromJson(json);
+  factory ProductReview.fromJson(Map<String, dynamic> map) {
+    return ProductReview(
+        id: map['id'],
+        rating: map['rating'],
+        content: map['content'],
+        user: map['user'],
+        timeAdded: (map['timeAdded']).toDate(),
+        product: map['productId']);
+  }
 
-  Map<String, dynamic> toJson() => _$ProductReviewToJson(this);
-}
-
-ProductReview _$ProductReviewFromJson(Map<String, dynamic> json) {
-  return ProductReview(
-      rating: json['rating'],
-      content: json['content'],
-      uid: json['uid'],
-      dateTime: json['dateTime'].toDate(),
-      productId: json['productId']);
-}
-
-Map<String, dynamic> _$ProductReviewToJson(ProductReview productReview) =>
-    <String, dynamic>{
-      'rating': productReview.rating,
-      'content': productReview.content,
-      'uid': productReview.uid,
-      'dateTime': productReview.dateTime,
-      'productId': productReview.productId
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'rating': rating,
+      'content': content,
+      'user': user,
+      'timeAdded': Timestamp.fromDate(timeAdded),
+      'product': product
     };
+  }
+
+  @override
+  String toString() {
+    return 'ProductReview(id: $id, rating: $rating, content: $content, user: $user, timeAdded: $timeAdded, product: $product)';
+  }
+}

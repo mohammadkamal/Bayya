@@ -1,8 +1,9 @@
-import 'package:bayya/views/watchlist/view_watch_list.dart';
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../views/watchlist/view_watch_list.dart';
+import '../views/watchlist/watchlist_viewmodel.dart';
+import '../views/widgets/styles/tween_animation_route.dart';
 
 class WatchlistCard extends StatelessWidget {
   const WatchlistCard({Key key}) : super(key: key);

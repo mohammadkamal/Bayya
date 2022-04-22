@@ -1,13 +1,13 @@
-import 'package:bayya/user/customer_database.dart';
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/catalog/catalog_view.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'user/customer_database.dart';
+import 'views/cart/shopping_cart_viewmodel.dart';
+import 'views/catalog/catalog_view.dart';
+import 'views/catalog/catalog_viewmodel.dart';
 import 'views/review/reviews_database.dart';
+import 'views/watchlist/watchlist_viewmodel.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,5 +1,6 @@
-import 'package:bayya/views/widgets/styles/box_decorations.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/styles/box_decorations.dart';
 
 class ProductViewVendor extends StatefulWidget {
   final String vendorUid;

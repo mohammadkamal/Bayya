@@ -1,9 +1,10 @@
-import 'package:bayya/user/user_login.dart';
-import 'package:bayya/views/catalog/catalog_view.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../views/catalog/catalog_view.dart';
+import '../views/widgets/styles/tween_animation_route.dart';
+import 'user_login.dart';
 
 class UserRegister extends StatefulWidget {
   const UserRegister({Key key}) : super(key: key);

@@ -1,6 +1,7 @@
-import 'package:bayya/repositories/abstract/watchlist_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../abstract/watchlist_repository.dart';
 
 class WatchlistRepositoryImplementation implements WatchlistRepository {
   CollectionReference get _watchlistCollection =>

@@ -1,14 +1,14 @@
-import 'package:bayya/models/product_review.dart';
-import 'package:bayya/user/customer_database.dart';
-import 'package:bayya/views/review/reviews_database.dart';
-import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
-import 'package:bayya/views/widgets/styles/box_decorations.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/product_review.dart';
+import '../../user/customer_database.dart';
+import '../widgets/stateless_widgets/sign_in_to_perfom_action.dart';
+import '../widgets/styles/box_decorations.dart';
+import '../widgets/styles/tween_animation_route.dart';
 import 'product_reviews_list.dart';
+import 'reviews_database.dart';
 import 'write_review.dart';
 
 class ProductReviewCard extends StatefulWidget {

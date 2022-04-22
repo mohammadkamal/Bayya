@@ -1,15 +1,13 @@
-import 'dart:developer';
-
-import 'package:bayya/models/product.dart';
-import 'package:bayya/search/search_page.dart';
-import 'package:bayya/side_drawer/side_bar.dart';
-import 'package:bayya/views/widgets/mixed_widgets/shopping_cart_upper_icon.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../enums/product_list_type.dart';
+import '../../models/product.dart';
+import '../../search/search_page.dart';
+import '../../side_drawer/side_bar.dart';
+import '../widgets/mixed_widgets/shopping_cart_upper_icon.dart';
+import '../widgets/styles/tween_animation_route.dart';
 import 'catalog_grid_item_view.dart';
 import 'catalog_list_item_view.dart';
 import 'catalog_viewmodel.dart';
@@ -28,9 +26,7 @@ class _CatalogViewState extends State<CatalogView> {
   @override
   void initState() {
     catalogViewModel = CatalogViewModel();
-    catalogViewModel.addListener(() {
-      log('listener');
-    });
+
     catalogViewModel.fetchProducts();
     //context.read<WatchlistViewModel>().fetchWatchlist();
     super.initState();
@@ -85,7 +81,10 @@ class _CatalogViewState extends State<CatalogView> {
               title: const Text(
                 'Discover',
               ),
-              actions: <Widget>[_upperSearchIcon(), const ShoppingCartUpperIcon()],
+              actions: <Widget>[
+                _upperSearchIcon(),
+                const ShoppingCartUpperIcon()
+              ],
             ),
             drawer: const AppSideBar(),
             body: RefreshIndicator(

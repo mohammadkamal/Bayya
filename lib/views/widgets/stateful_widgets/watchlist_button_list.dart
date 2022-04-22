@@ -1,8 +1,9 @@
-import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
-import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../watchlist/watchlist_viewmodel.dart';
+import '../stateless_widgets/sign_in_to_perfom_action.dart';
 
 class WatchlistButtonList extends StatefulWidget {
   final String productId;

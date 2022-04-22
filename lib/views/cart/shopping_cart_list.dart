@@ -1,9 +1,10 @@
-import 'package:bayya/views/cart/shopping_cart_item.dart';
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/catalog/catalog_view.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../catalog/catalog_view.dart';
+import '../widgets/styles/tween_animation_route.dart';
+import 'shopping_cart_item.dart';
+import 'shopping_cart_viewmodel.dart';
 
 class ShoppingCartList extends StatelessWidget {
   const ShoppingCartList({Key key}) : super(key: key);

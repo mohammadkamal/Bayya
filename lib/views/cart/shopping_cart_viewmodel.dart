@@ -1,6 +1,7 @@
-import 'package:bayya/utils/injector.dart';
-import 'package:bayya/views/abstract/base_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../utils/injector.dart';
+import '../abstract/base_view_model.dart';
 
 class ShoppingCartViewModel extends BaseViewModel {
   final _cartRepository = Injector().cartRepository;

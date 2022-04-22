@@ -1,6 +1,6 @@
-import 'package:bayya/models/product.dart';
-import 'package:bayya/utils/injector.dart';
-import 'package:bayya/views/abstract/base_view_model.dart';
+import '../../models/product.dart';
+import '../../utils/injector.dart';
+import '../abstract/base_view_model.dart';
 
 class CatalogViewModel extends BaseViewModel {
   final _catalogRepository = Injector().catalogRepository;

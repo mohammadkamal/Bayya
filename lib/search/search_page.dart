@@ -1,7 +1,8 @@
-import 'package:bayya/search/product_search_results.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../views/catalog/catalog_viewmodel.dart';
+import 'product_search_results.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);

@@ -1,6 +1,7 @@
-import 'package:bayya/models/product.dart';
-import 'package:bayya/repositories/abstract/catalog_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../models/product.dart';
+import '../abstract/catalog_repository.dart';
 
 class CatalogRepositoryImplementation implements CatalogRepository {
   /*
@@ -19,7 +20,7 @@ class CatalogRepositoryImplementation implements CatalogRepository {
 
     return _stream.map((snaps) {
       for (var element in snaps.docs) {
-        _productsMap[element.id] = Product.fromMap(element.data());
+        _productsMap[element.id] = Product.fromJson(element.data());
       }
       return _productsMap;
     });

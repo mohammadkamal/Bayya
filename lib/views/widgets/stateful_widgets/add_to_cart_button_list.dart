@@ -1,9 +1,10 @@
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
-import 'package:bayya/views/widgets/stateless_widgets/sign_in_to_perfom_action.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../cart/shopping_cart_viewmodel.dart';
+import '../../catalog/catalog_viewmodel.dart';
+import '../stateless_widgets/sign_in_to_perfom_action.dart';
 
 class AddToCartButtonList extends StatefulWidget {
   final String productId;

@@ -1,11 +1,12 @@
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/catalog/catalog_viewmodel.dart';
-import 'package:bayya/views/product/product_view.dart';
-import 'package:bayya/views/widgets/stateful_widgets/list_item_image.dart';
-import 'package:bayya/views/widgets/styles/box_decorations.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../catalog/catalog_viewmodel.dart';
+import '../product/product_view.dart';
+import '../widgets/stateful_widgets/list_item_image.dart';
+import '../widgets/styles/box_decorations.dart';
+import '../widgets/styles/tween_animation_route.dart';
+import 'shopping_cart_viewmodel.dart';
 
 class ShoppingCartItem extends StatelessWidget {
   final String productId;

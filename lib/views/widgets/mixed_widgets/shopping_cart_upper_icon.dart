@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:bayya/views/cart/shopping_cart_list.dart';
-import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
-import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../cart/shopping_cart_list.dart';
+import '../../cart/shopping_cart_viewmodel.dart';
+import '../styles/tween_animation_route.dart';
 
 class ShoppingCartUpperIcon extends StatelessWidget {
   const ShoppingCartUpperIcon({Key key}) : super(key: key);
@@ -13,8 +12,8 @@ class ShoppingCartUpperIcon extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.shopping_cart),
       onPressed: () {
-        Navigator.of(context)
-            .push(TweenAnimationRoute().playAnimation(const ShoppingCartList()));
+        Navigator.of(context).push(
+            TweenAnimationRoute().playAnimation(const ShoppingCartList()));
       },
     );
   }
@@ -37,9 +36,7 @@ class _CartProductsNumberState extends State<_CartProductsNumber> {
   @override
   void initState() {
     shoppingCartViewModel = ShoppingCartViewModel();
-    shoppingCartViewModel.addListener(() {
-      log('shopping cart listener');
-    });
+
     shoppingCartViewModel.fetchShoppingCart();
     super.initState();
   }

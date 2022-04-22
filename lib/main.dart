@@ -1,26 +1,25 @@
-import 'package:bayya/cart/shopping_cart.dart';
-import 'package:bayya/catalog/catalog.dart';
-import 'package:bayya/catalog/shopping_list.dart';
-import 'package:bayya/review/reviews_database.dart';
 import 'package:bayya/user/customer_database.dart';
-import 'package:bayya/user/vendors_list.dart';
-import 'package:bayya/watchlist/watchlist.dart';
+import 'package:bayya/views/cart/shopping_cart_viewmodel.dart';
+import 'package:bayya/views/catalog/catalog_view.dart';
+import 'package:bayya/views/catalog/catalog_viewmodel.dart';
+import 'package:bayya/views/watchlist/watchlist_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'views/review/reviews_database.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => ShoppingCart()),
+    ChangeNotifierProvider(create: (context) => CatalogViewModel()),
+    ChangeNotifierProvider(create: (context) => ShoppingCartViewModel()),
     ChangeNotifierProvider(
-      create: (context) => Watchlist(),
+      create: (context) => WatchlistViewModel(),
     ),
     ChangeNotifierProvider(create: (context) => CustomerDatabase()),
     ChangeNotifierProvider(create: (context) => ReviewsDatabase()),
-    ChangeNotifierProvider(create: (context) => Catalog()),
-    ChangeNotifierProvider(create: (context) => VendorsList()),
   ], child: BayyaApplication()));
 }
 
@@ -34,7 +33,7 @@ class _BayyaApplicationState extends State<BayyaApplication> {
 
   AppBarTheme _appBarTheme() {
     return AppBarTheme(
-        backwardsCompatibility: false,
+        //backwardsCompatibility: false,
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
         actionsIconTheme: IconThemeData(color: Colors.black87),
@@ -63,7 +62,7 @@ class _BayyaApplicationState extends State<BayyaApplication> {
           return MaterialApp(
             title: 'Bayya',
             theme: _mainTheme(),
-            home: ShoppingList(),
+            home: CatalogView(),
           );
         }
 

@@ -1,6 +1,6 @@
 import 'package:bayya/user/edit_profile.dart';
 import 'package:bayya/user/user_information_top_card.dart';
-import 'package:bayya/widget_utilities/tween_animation_route.dart';
+import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

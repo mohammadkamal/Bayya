@@ -1,25 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class CurrentUserHeaderCard extends StatefulWidget {
-  @override
-  _CurrentUserHeaderCardState createState() => _CurrentUserHeaderCardState();
-}
-
-class _CurrentUserHeaderCardState extends State<CurrentUserHeaderCard> {
-  String _userNameLabel = 'Vistor';
-
-  @override
-  void initState() {
-    super.initState();
+class CurrentUserHeaderCard extends StatelessWidget {
+  String get userDisplayName {
     if (FirebaseAuth.instance.currentUser == null ||
         FirebaseAuth.instance.currentUser.isAnonymous) {
-      _userNameLabel = 'Visitor';
+      return 'Visitor';
     } else {
       if (FirebaseAuth.instance.currentUser.displayName.isEmpty) {
-        _userNameLabel = 'User Name not specifed';
+        return 'User Name not specifed';
       } else {
-        _userNameLabel = FirebaseAuth.instance.currentUser.displayName;
+        return FirebaseAuth.instance.currentUser.displayName;
       }
     }
   }
@@ -42,7 +33,7 @@ class _CurrentUserHeaderCardState extends State<CurrentUserHeaderCard> {
             padding: const EdgeInsets.only(left: 20),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(_userNameLabel, softWrap: true)]),
+                children: [Text(userDisplayName, softWrap: true)]),
           ),
         ],
       ),

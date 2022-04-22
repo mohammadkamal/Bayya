@@ -1,6 +1,6 @@
-import 'package:bayya/catalog/shopping_list.dart';
 import 'package:bayya/user/user_login.dart';
-import 'package:bayya/widget_utilities/tween_animation_route.dart';
+import 'package:bayya/views/catalog/catalog_view.dart';
+import 'package:bayya/views/widgets/styles/tween_animation_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +99,7 @@ class _UserRegisterState extends State<UserRegister> {
                 var result = await _register()
                     .whenComplete(() => Navigator.pop(context))
                     .then((value) => Navigator.pushReplacement(context,
-                        TweenAnimationRoute().playAnimation(ShoppingList())));
+                        TweenAnimationRoute().playAnimation(CatalogView())));
               }
             },
             child: Text('Submit')));

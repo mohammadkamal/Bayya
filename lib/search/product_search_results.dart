@@ -1,4 +1,4 @@
-import 'package:bayya/catalog/shopping_list_item.dart';
+import 'package:bayya/views/catalog/catalog_list_item_view.dart';
 import 'package:flutter/material.dart';
 
 class ProductSearchResults extends StatefulWidget {
@@ -18,7 +18,7 @@ class _ProductSearchResultsState extends State<ProductSearchResults> {
             padding: EdgeInsets.symmetric(vertical: 8.0),
             itemCount: widget.matchResults.length,
             itemBuilder: (context, index) {
-              return ShoppingListItem(
+              return CatalogListItem(
                   productId: widget.matchResults.elementAt(index));
             }));
   }
